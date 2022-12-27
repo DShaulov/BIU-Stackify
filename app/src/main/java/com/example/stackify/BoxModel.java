@@ -11,7 +11,7 @@ public class BoxModel {
     private int positionZ;
 
 
-    public BoxModel(int height, int width, int length, int unpackOrder) {
+    public BoxModel(int unpackOrder ,int height, int width, int length) {
         this.height = height;
         this.width = width;
         this.length = length;
