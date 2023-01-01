@@ -3,7 +3,6 @@ package com.example.stackify;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
@@ -25,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private Button uploadBtn;
     private Button prevSolsBtn;
     private AppDB db;
-    private ArrayList<BoxModel> boxList;
+    private ArrayList<Box> boxList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                         int width = Integer.parseInt(nextLine[2]);
                         int length = Integer.parseInt(nextLine[3]);
                         System.out.println(unpackOrder + " " + height + " " + width + " " + length + " ");
-                        BoxModel newBox = new BoxModel(unpackOrder, height, width, length);
+                        Box newBox = new Box(unpackOrder, height, width, length);
                         boxList.add(newBox);
                     }
                     System.out.println(boxList.size());
@@ -92,40 +91,4 @@ public class MainActivity extends AppCompatActivity {
     private void startPrevSolutionsActivity() {
 
     }
-
-
-
-
-
-    ////////////////////////////////////
-    public boolean areSolutionsRetrievable() {
-        List<SolutionModel> allSolutions = solutionDao.index();
-        if (allSolutions == null) {
-            return false;
-        }
-        return true;
-    }
-
-    // Checks if solution has been inserted into the database.
-    public boolean isSolutionInserted(String solutionName) {
-        SolutionModel solution = solutionDao.get(solutionName);
-        if (solution == null) {
-            return false;
-        }
-        return true;
-    }
-
-    // Checks if solution has been updated in the database.
-    public boolean isSolutionChanged(String solutionName, int newHeight, int newWidth, int newLength, List<BoxModel> newBoxList) {
-        SolutionModel solution = solutionDao.get(solutionName);
-        if ((solution.getContainerHeight() != newHeight) || (solution.getContainerWidth() != newWidth) || (solution.getContainerLength() != newLength)) {
-            return false;
-        }
-        if (!solution.getBoxList().equals(newBoxList)) {
-            return false;
-        }
-        return true;
-    }
-
-
 }

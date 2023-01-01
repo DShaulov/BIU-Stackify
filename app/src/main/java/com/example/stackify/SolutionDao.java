@@ -11,14 +11,14 @@ import java.util.List;
 
 @Dao
 public interface SolutionDao {
-    @Query("SELECT * FROM SolutionModel")
-    List<SolutionModel> index();
-    @Query("SELECT * FROM SolutionModel WHERE solutionName = :solutionName")
-    SolutionModel get(String solutionName);
+    @Query("SELECT * FROM Solution")
+    List<Solution> index();
+    @Query("SELECT * FROM Solution WHERE solutionName = :solutionName")
+    Solution get(String solutionName);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(SolutionModel solution);
+    void insert(Solution solution);
     @Update
-    void update(SolutionModel solution);
+    void update(Solution solution);
     @Delete
-    void delete(SolutionModel solution);
+    void delete(Solution solution);
 }
