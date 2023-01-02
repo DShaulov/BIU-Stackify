@@ -1,6 +1,10 @@
 package com.example.stackify;
 
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+
 public class Box {
     private int height;
     private int width;
@@ -39,6 +43,48 @@ public class Box {
         int temp = height;
         height = width;
         width = temp;
+    }
+
+    // Rotates the height and length dimensions
+    public void rotateHeightLength() {
+        int temp = height;
+        height = length;
+        length = temp;
+    }
+
+    // Rotates the width and length dimensions of the box
+    public void rotateWidthLength() {
+        int temp = width;
+        width = length;
+        length = temp;
+    }
+
+    // Rotates the box such that its length is smaller and as close as possible to the segment length
+    public void rotateToClosestSmallerDim(int segmentLength) {
+        Integer heightDistance = segmentLength - height;
+        Integer widthDistance = segmentLength - width;
+        Integer lengthDistance = segmentLength - length;
+        ArrayList<Integer> distanceArray = new ArrayList<>();
+        distanceArray.add(heightDistance);
+        distanceArray.add(widthDistance);
+        distanceArray.add(lengthDistance);
+        distanceArray.clone();
+        // Among positive distances (meaning smaller than segmentLength), choose the smallest
+        Iterator<Integer> iterator = distanceArray.iterator();
+        while (iterator.hasNext()){
+            Integer distance = iterator.next();
+            if (distance < 0) {
+                iterator.remove();
+            }
+        }
+        Collections.sort(distanceArray);
+        Integer smallestDistance = distanceArray.get(0);
+        if (smallestDistance == heightDistance) {
+            rotateHeightLength();
+        }
+        if (smallestDistance == widthDistance) {
+            rotateWidthLength();
+        }
     }
 
     public int getMaxDim() {

@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
                         boxList.add(newBox);
                     }
                     System.out.println(boxList.size());
-                    startSolDisplayActivity();
                 }
                 catch (Exception e) {
                     System.out.println(e);
@@ -82,11 +81,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     });
-
-    private void startSolDisplayActivity() {
-        Intent intent = new Intent(this, SolutionDisplayActivity.class);
-        startActivity(intent);
-    }
 
     private void startPrevSolutionsActivity() {
 

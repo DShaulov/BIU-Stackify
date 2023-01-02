@@ -36,7 +36,7 @@ public class AppDBTest {
 
     @Test
     public void writeAndReadSolution() throws Exception {
-        Solution solution = new Solution(600, 800, 1600);
+        Solution solution = new Solution(600, 800, 1600, 3);
         solution.setSolutionName("Test Solution");
         Segment segment1 = new Segment(600, 800, 800);
         Segment segment2 = new Segment(600, 800, 800);

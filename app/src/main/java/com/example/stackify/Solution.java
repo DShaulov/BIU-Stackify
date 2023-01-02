@@ -18,18 +18,31 @@ public class Solution {
     private int containerLength;
     private int numOfSegments;
     private List<Segment> segmentList;
+    private int numOfBoxesTotal;
+    private int numOfBoxesInSolution;
 
-    public Solution(int containerHeight, int containerWidth, int containerLength) {
+    public Solution(int containerHeight, int containerWidth, int containerLength, int numOfBoxesTotal) {
         this.solutionName = "Solution";
         this.containerHeight = containerHeight;
         this.containerWidth = containerWidth;
         this.containerLength = containerLength;
         this.segmentList = new ArrayList<>();
+        this.numOfBoxesTotal = numOfBoxesTotal;
+        this.numOfBoxesInSolution = 0;
     }
 
     public void addSegment(Segment segment) {
         segmentList.add(segment);
         numOfSegments += 1;
+        numOfBoxesInSolution += segment.getNumOfBoxes();
+    }
+
+    /**
+     * Returns the percentage of boxes in the solution out of total number of boxes.
+     * @return
+     */
+    public float getCoverage() {
+        return numOfBoxesInSolution / numOfBoxesTotal;
     }
 
     @NonNull
