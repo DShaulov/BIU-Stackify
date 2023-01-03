@@ -59,8 +59,15 @@ public class Box {
         length = temp;
     }
 
-    // Rotates the box such that its length is smaller and as close as possible to the segment length
-    public void rotateToClosestSmallerDim(int segmentLength) {
+    // If the height of the box is larger than the width, rotates it
+    public void rotateToMaxWidth() {
+        if (height > width) {
+            rotateHeightWidth();
+        }
+    }
+
+    // Rotates the box such that its length is smaller than, and as close as possible, to the segment length
+    public void rotateToClosestDim(int segmentLength) {
         Integer heightDistance = segmentLength - height;
         Integer widthDistance = segmentLength - width;
         Integer lengthDistance = segmentLength - length;

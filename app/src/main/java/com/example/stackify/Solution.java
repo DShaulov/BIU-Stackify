@@ -101,4 +101,20 @@ public class Solution {
     public void setNumOfSegments(int numOfSegments) {
         this.numOfSegments = numOfSegments;
     }
+
+    public int getNumOfBoxesTotal() {
+        return numOfBoxesTotal;
+    }
+
+    public void setNumOfBoxesTotal(int numOfBoxesTotal) {
+        this.numOfBoxesTotal = numOfBoxesTotal;
+    }
+
+    public int getNumOfBoxesInSolution() {
+        return numOfBoxesInSolution;
+    }
+
+    public void setNumOfBoxesInSolution(int numOfBoxesInSolution) {
+        this.numOfBoxesInSolution = numOfBoxesInSolution;
+    }
 }

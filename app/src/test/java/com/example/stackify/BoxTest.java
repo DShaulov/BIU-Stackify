@@ -32,6 +32,14 @@ public class BoxTest extends TestCase {
         assertEquals(1500, testBox.getLength());
     }
 
+    public void testRotateToMaxWidth() {
+        Box testBox = new Box(1, 1500, 300, 300);
+        testBox.rotateToMaxWidth();
+        assertEquals(1500, testBox.getWidth());
+        testBox.rotateToMaxWidth();
+        assertEquals(1500, testBox.getWidth());
+    }
+
     public void testGetMaxDim() {
         Box testBox = new Box(1, 200, 1500, 300);
         assertEquals(1500, testBox.getMaxDim());
@@ -42,9 +50,9 @@ public class BoxTest extends TestCase {
         assertEquals(200, testBox.getMinDim());
     }
 
-    public void testRotateToClosestSmallerDim() {
+    public void testRotateToClosestDim() {
         Box testBox = new Box(1, 750, 1500, 825);
-        testBox.rotateToClosestSmallerDim(800);
+        testBox.rotateToClosestDim(800);
         assertEquals(750, testBox.getLength());
     }
 }

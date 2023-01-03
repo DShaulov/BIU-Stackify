@@ -50,7 +50,7 @@ public class SegmentLengthSelector {
      * @param boxList
      * @return segment length
      */
-    public static int minVarianceDim(ArrayList<Box> boxList) {
+    public static DimNameValuePair minVarianceDim(ArrayList<Box> boxList) {
         ArrayList<Integer> heightList = new ArrayList<>();
         ArrayList<Integer> widthList = new ArrayList<>();
         ArrayList<Integer> lengthList = new ArrayList<>();
@@ -67,13 +67,14 @@ public class SegmentLengthSelector {
 
         double minVariance = Math.min(heightVariance, Math.min(widthVariance, lengthVariance));
         if (minVariance == heightVariance) {
-            return Collections.max(heightList);
+            return new DimNameValuePair("Height", Collections.max(heightList));
+
         }
         else if (minVariance == widthVariance) {
-            return Collections.max(widthList);
+            return new DimNameValuePair("Width", Collections.max(widthList));
         }
         else {
-            return Collections.max(lengthList);
+            return new DimNameValuePair("Length", Collections.max(lengthList));
         }
     }
 }

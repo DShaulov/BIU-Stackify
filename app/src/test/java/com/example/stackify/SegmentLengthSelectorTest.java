@@ -35,7 +35,7 @@ public class SegmentLengthSelectorTest extends TestCase {
         testBoxList.add(new Box(1, 200, 100, 600));
         testBoxList.add(new Box(1, 225, 200, 400));
 
-        assertEquals(250, SegmentLengthSelector.minVarianceDim(testBoxList));
+        assertEquals(250, SegmentLengthSelector.minVarianceDim(testBoxList).getDimValue());
 
         ArrayList<Box> testBoxList2 = new ArrayList<Box>();
         testBoxList2.add(new Box(1, 200, 300, 1200));
@@ -44,7 +44,7 @@ public class SegmentLengthSelectorTest extends TestCase {
         testBoxList2.add(new Box(1, 200, 100, 1200));
         testBoxList2.add(new Box(1, 225, 200, 1180));
 
-        assertEquals(1200, SegmentLengthSelector.minVarianceDim(testBoxList2));
+        assertEquals(1200, SegmentLengthSelector.minVarianceDim(testBoxList2).getDimValue());
 
     }
 }
