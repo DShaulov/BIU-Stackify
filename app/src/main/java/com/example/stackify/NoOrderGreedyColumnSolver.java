@@ -8,6 +8,7 @@ public class NoOrderGreedyColumnSolver implements Solver{
     private int containerWidth;
     private int containerLength;
     private int remainingContainerLength;
+    private int totalBoxes;
     private Solution solution;
 
     public NoOrderGreedyColumnSolver(ArrayList<Box> boxList, int containerHeight, int containerWidth, int containerLength, int remainingContainerLength) {
@@ -16,6 +17,7 @@ public class NoOrderGreedyColumnSolver implements Solver{
         this.containerWidth = containerWidth;
         this.containerLength = containerLength;
         this.remainingContainerLength = remainingContainerLength;
+        this.totalBoxes = boxList.size();
         this.solution = new Solution(containerHeight, containerWidth, containerLength, boxList.size());
     }
 
@@ -28,6 +30,17 @@ public class NoOrderGreedyColumnSolver implements Solver{
         }
         // Sort all boxes by width
         BoxSorter.sortByWidth(boxList);
+        int boxesPacked = 0;
+        while ((remainingContainerLength > segmentLen) && (true)) {
+
+        }
+    }
+
+    public boolean thereAreBoxesRemaining(int boxesPacked) {
+        if (boxesPacked < totalBoxes) {
+            return true;
+        }
+        return false;
     }
 
     @Override
