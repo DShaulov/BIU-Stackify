@@ -34,7 +34,5 @@ public class NoOrderGreedyColumnSolverTest extends TestCase {
 
         assertEquals(400, box2.getBottomLeft().getX());
         assertEquals(300, box2.getBottomLeft().getY());
-
-
     }
 }

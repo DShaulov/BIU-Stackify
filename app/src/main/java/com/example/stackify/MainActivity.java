@@ -16,6 +16,7 @@ import com.opencsv.CSVReader;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,10 +54,16 @@ public class MainActivity extends AppCompatActivity {
                 CSVReader reader = new CSVReader(new InputStreamReader(input));
                 String[] nextLine;
                 try {
-                    // Skip first 4 filler lines
-                    for (int i = 0; i < 4; i++) {
-                        nextLine = reader.readNext();
-                    }
+                    // Read label line
+                    nextLine = reader.readNext();
+                    // Get container dimensions
+                    nextLine = reader.readNext();
+                    int containerHeight = Integer.parseInt(nextLine[1]);
+                    int containerWidth = Integer.parseInt(nextLine[2]);
+                    int containerLength = Integer.parseInt(nextLine[3]);
+                    // Skip next 2 filler lines
+                    nextLine = reader.readNext();
+                    nextLine = reader.readNext();
                     // Read lines from file and create boxes
                     while ((nextLine = reader.readNext()) != null) {
                         int unpackOrder = Integer.parseInt(nextLine[0]);
@@ -68,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                         boxList.add(newBox);
                     }
                     System.out.println(boxList.size());
+                    startSolutionLoadingActivity(containerHeight, containerWidth, containerLength);
                 }
                 catch (Exception e) {
                     System.out.println(e);
@@ -82,6 +90,16 @@ public class MainActivity extends AppCompatActivity {
         }
     });
 
+    private void startSolutionLoadingActivity(int containerHeight, int containerWidth, int containerLength) {
+        Intent intent = new Intent(this, SolutionLoadingActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("boxList", (Serializable) boxList);
+        intent.putExtra("Bundle", bundle);
+        intent.putExtra("containerHeight", containerHeight);
+        intent.putExtra("containerWidth", containerWidth);
+        intent.putExtra("containerLength", containerLength);
+        startActivity(intent);
+    }
     private void startPrevSolutionsActivity() {
 
     }

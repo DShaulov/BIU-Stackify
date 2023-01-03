@@ -42,7 +42,7 @@ public class Solution {
      * @return
      */
     public float getCoverage() {
-        return numOfBoxesInSolution / numOfBoxesTotal;
+        return (numOfBoxesInSolution / numOfBoxesTotal) * 100;
     }
 
     @NonNull
