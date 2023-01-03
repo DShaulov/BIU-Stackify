@@ -1,11 +1,12 @@
 package com.example.stackify;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-public class Box {
+public class Box implements Serializable {
     private int height;
     private int width;
     private int length;

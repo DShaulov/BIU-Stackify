@@ -6,7 +6,11 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
@@ -26,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private Button prevSolsBtn;
     private AppDB db;
     private ArrayList<Box> boxList;
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +80,8 @@ public class MainActivity extends AppCompatActivity {
                         boxList.add(newBox);
                     }
                     System.out.println(boxList.size());
-                    startSolutionLoadingActivity(containerHeight, containerWidth, containerLength);
+                    //startSolutionLoadingActivity(containerHeight, containerWidth, containerLength);
+                    launchDialog();
                 }
                 catch (Exception e) {
                     System.out.println(e);
@@ -102,5 +108,13 @@ public class MainActivity extends AppCompatActivity {
     }
     private void startPrevSolutionsActivity() {
 
+    }
+
+    private void launchDialog() {
+        AlertDialog.Builder dialogBuilder= new AlertDialog.Builder(this);
+        dialogBuilder.setView(R.layout.dialog);
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.show();
     }
 }
