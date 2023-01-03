@@ -135,4 +135,12 @@ public class Box {
     public void setUnpackOrder(int unpackOrder) {
         this.unpackOrder = unpackOrder;
     }
+
+    public Coordinate getBottomLeft() {
+        return bottomLeft;
+    }
+
+    public void setBottomLeft(Coordinate bottomLeft) {
+        this.bottomLeft = bottomLeft;
+    }
 }
