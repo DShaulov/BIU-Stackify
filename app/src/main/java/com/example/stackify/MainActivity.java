@@ -8,11 +8,13 @@ import androidx.room.Room;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -30,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     private Button prevSolsBtn;
     private AppDB db;
     private ArrayList<Box> boxList;
+    int containerHeight;
+    int containerWidth;
+    int containerLength;
     private Dialog dialog;
 
     @Override
@@ -63,9 +68,9 @@ public class MainActivity extends AppCompatActivity {
                     nextLine = reader.readNext();
                     // Get container dimensions
                     nextLine = reader.readNext();
-                    int containerHeight = Integer.parseInt(nextLine[1]);
-                    int containerWidth = Integer.parseInt(nextLine[2]);
-                    int containerLength = Integer.parseInt(nextLine[3]);
+                    containerHeight = Integer.parseInt(nextLine[1]);
+                    containerWidth = Integer.parseInt(nextLine[2]);
+                    containerLength = Integer.parseInt(nextLine[3]);
                     // Skip next 2 filler lines
                     nextLine = reader.readNext();
                     nextLine = reader.readNext();
@@ -96,11 +101,12 @@ public class MainActivity extends AppCompatActivity {
         }
     });
 
-    private void startSolutionLoadingActivity(int containerHeight, int containerWidth, int containerLength) {
+    private void startSolutionLoadingActivity(boolean isOrdered) {
         Intent intent = new Intent(this, SolutionLoadingActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("boxList", (Serializable) boxList);
         intent.putExtra("Bundle", bundle);
+        intent.putExtra("isOrdered", isOrdered);
         intent.putExtra("containerHeight", containerHeight);
         intent.putExtra("containerWidth", containerWidth);
         intent.putExtra("containerLength", containerLength);
@@ -115,6 +121,34 @@ public class MainActivity extends AppCompatActivity {
         dialogBuilder.setView(R.layout.dialog);
         AlertDialog alertDialog = dialogBuilder.create();
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                uploadBtn.setVisibility(View.VISIBLE);
+                prevSolsBtn.setVisibility(View.VISIBLE);
+            }
+        });
+        uploadBtn.setVisibility(View.INVISIBLE);
+        prevSolsBtn.setVisibility(View.INVISIBLE);
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                Button orderedBtn = alertDialog.findViewById(R.id.orderedSolBtn);
+                Button unorderedBtn = alertDialog.findViewById(R.id.unorderedSolBtn);
+                orderedBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startSolutionLoadingActivity(true);
+                    }
+                });
+                unorderedBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startSolutionLoadingActivity(false);
+                    }
+                });
+            }
+        });
         alertDialog.show();
     }
 }
