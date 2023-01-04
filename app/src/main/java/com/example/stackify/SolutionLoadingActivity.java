@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class SolutionLoadingActivity extends AppCompatActivity {
@@ -26,6 +28,24 @@ public class SolutionLoadingActivity extends AppCompatActivity {
         containerHeight = getIntent().getIntExtra("containerHeight", 0);
         containerWidth = getIntent().getIntExtra("containerWidth", 0);
         containerLength = getIntent().getIntExtra("containerLength", 0);
+    }
+
+    private Runnable launchTask = new Runnable() {
+        public void run() {
+            Intent intent = new Intent(getApplicationContext(), SolutionViewActivity.class);
+            Bundle bundle = new Bundle();
+            Solution solution = new Solution(containerHeight, containerWidth, containerLength, boxList.size());
+            bundle.putSerializable("solution", (Serializable) solution);
+            intent.putExtra("Bundle", bundle);
+            startActivity(intent);
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Handler handler = new Handler();
+        handler.postDelayed(launchTask, 1000);
     }
 
     @Override

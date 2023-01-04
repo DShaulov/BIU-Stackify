@@ -4,11 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Solution {
+public class Solution implements Serializable {
     @PrimaryKey
     @NonNull
     private String solutionName;
