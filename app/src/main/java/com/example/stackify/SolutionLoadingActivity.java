@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class SolutionLoadingActivity extends AppCompatActivity {
     private boolean isOrdered;
+    private Solution solution;
     private ArrayList<Box> boxList;
     private int containerHeight;
     private int containerWidth;
@@ -34,7 +35,6 @@ public class SolutionLoadingActivity extends AppCompatActivity {
         public void run() {
             Intent intent = new Intent(getApplicationContext(), SolutionViewActivity.class);
             Bundle bundle = new Bundle();
-            Solution solution = new Solution(containerHeight, containerWidth, containerLength, boxList.size());
             bundle.putSerializable("solution", (Serializable) solution);
             intent.putExtra("Bundle", bundle);
             startActivity(intent);
@@ -44,8 +44,23 @@ public class SolutionLoadingActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        calculateSolution();
         Handler handler = new Handler();
         handler.postDelayed(launchTask, 1000);
+    }
+
+    public void calculateSolution() {
+        if (isOrdered) {
+            Solver greedyColumnSolver = new NoOrderGreedyColumnSolver(boxList, containerHeight, containerWidth, containerLength);
+            greedyColumnSolver.solve();
+            solution = greedyColumnSolver.getSolution();
+        }
+        else {
+            Solver greedyColumnSolver = new NoOrderGreedyColumnSolver(boxList, containerHeight, containerWidth, containerLength);
+            greedyColumnSolver.solve();
+            solution = greedyColumnSolver.getSolution();
+        }
+
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.stackify;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class NoOrderGreedyColumnSolver implements Solver{
     private ArrayList<Box> boxList;
@@ -27,7 +28,9 @@ public class NoOrderGreedyColumnSolver implements Solver{
         int segmentLen = SegmentLengthSelector.minVarianceDim(boxList).getDimValue();
         for (Box box : boxList) {
             box.rotateToClosestDim(segmentLen);
+            box.rotateToMaxWidth();
         }
+        discardTooLarge();
         // Sort all boxes by width
         BoxSorter.sortByWidth(boxList);
         int boxIndex = 0;
@@ -47,8 +50,20 @@ public class NoOrderGreedyColumnSolver implements Solver{
                 xPosition += columnWidth;
                 yPosition = 0;
             }
+            xPosition = 0;
             solution.addSegment(segment);
             remainingContainerLength -= segmentLen;
+        }
+    }
+
+    // Removes boxes that are either too large or too tall
+    public void discardTooLarge() {
+        Iterator<Box> iterator = boxList.iterator();
+        while (iterator.hasNext()){
+            Box box = iterator.next();
+            if (containerHeight < box.getHeight() || containerWidth < box.getWidth()) {
+                iterator.remove();
+            }
         }
     }
 

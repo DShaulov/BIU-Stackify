@@ -1,8 +1,9 @@
 package com.example.stackify;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Segment {
+public class Segment implements Serializable {
     private int height;
     private int width;
     private int length;
