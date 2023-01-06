@@ -2,6 +2,8 @@ package com.example.stackify;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -9,12 +11,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +28,7 @@ public class SolutionViewActivity extends AppCompatActivity {
     private Button nextSegmentBtn;
     private Button prevSegmentBtn;
     private Button optionsBtn;
+    private TextView segmentNumTextView;
     private Solution solution;
     private int segmentNum;
     private int containerHeight;
@@ -46,6 +51,7 @@ public class SolutionViewActivity extends AppCompatActivity {
         nextSegmentBtn = findViewById(R.id.nextSegmentBtn);
         prevSegmentBtn = findViewById(R.id.prevSegmentBtn);
         optionsBtn = findViewById(R.id.optionsBtn);
+        segmentNumTextView = findViewById(R.id.segmentNumTextView);
 
         Bundle bundle = getIntent().getBundleExtra("Bundle");
         solution = (Solution) bundle.getSerializable("solution");
@@ -81,7 +87,14 @@ public class SolutionViewActivity extends AppCompatActivity {
                 showPrevSegment();
             }
         });
+        optionsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchOptionsDialog();
+            }
+        });
 
+        updateSegmentNumTextView();
         drawBoxes(segmentNum);
     }
 
@@ -92,6 +105,7 @@ public class SolutionViewActivity extends AppCompatActivity {
         Segment segment = solution.getSegmentList().get(segmentNum);
         for (Box box : segment.getBoxList()) {
             Integer randomColor = colors.get(randomizer.nextInt(colors.size()));
+            // Since (0,0) is the top-left corner of the device, y-axis calculations need to take that into account
             int top = this.containerHeight - box.getBottomLeft().getY();
             int bottom = top - box.getHeight();
             int left = box.getBottomLeft().getX();
@@ -118,6 +132,7 @@ public class SolutionViewActivity extends AppCompatActivity {
     public void showNextSegment() {
         if (segmentNum != solution.getNumOfSegments() - 1) {
             segmentNum += 1;
+            updateSegmentNumTextView();
             drawBoxes(segmentNum);
         }
     }
@@ -125,10 +140,62 @@ public class SolutionViewActivity extends AppCompatActivity {
     public void showPrevSegment() {
         if (segmentNum != 0) {
             segmentNum -= 1;
+            updateSegmentNumTextView();
             drawBoxes(segmentNum);
         }
     }
 
+    private void launchOptionsDialog() {
+        AlertDialog.Builder dialogBuilder= new AlertDialog.Builder(this);
+        dialogBuilder.setView(R.layout.dialog_solution_viewer);
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                Button saveSolutionBtn = alertDialog.findViewById(R.id.saveSolutionBtn);
+                Button solutionInfoBtn = alertDialog.findViewById(R.id.solutionInfoBtn);
+                Button rearrangeBtn = alertDialog.findViewById(R.id.rearrangeManuallyBtn);
+
+                saveSolutionBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        saveSolution();
+                    }
+                });
+                solutionInfoBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showSolutionInfo();
+                    }
+                });
+                rearrangeBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        rearrangeSolution();
+                    }
+                });
+            }
+        });
+        alertDialog.show();
+    }
+
+    public void saveSolution() {
+
+    }
+
+    public void showSolutionInfo() {
+
+    }
+
+    public void rearrangeSolution() {
+
+    }
+
+    public void updateSegmentNumTextView() {
+        String segmentNumString = String.format("Segment %d of %d", segmentNum + 1, solution.getNumOfSegments());
+        segmentNumTextView.setText(segmentNumString);
+    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();

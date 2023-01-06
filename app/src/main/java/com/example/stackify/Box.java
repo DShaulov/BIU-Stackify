@@ -11,10 +11,9 @@ public class Box implements Serializable {
     private int width;
     private int length;
     private int unpackOrder;
-    private Coordinate topLeft;
-    private Coordinate topRight;
+    private boolean isPacked;
     private Coordinate bottomLeft;
-    private Coordinate bottomRight;
+
 
 
     public Box(int unpackOrder , int height, int width, int length) {
@@ -143,5 +142,13 @@ public class Box implements Serializable {
 
     public void setBottomLeft(Coordinate bottomLeft) {
         this.bottomLeft = bottomLeft;
+    }
+
+    public boolean isPacked() {
+        return isPacked;
+    }
+
+    public void setPacked(boolean packed) {
+        isPacked = packed;
     }
 }

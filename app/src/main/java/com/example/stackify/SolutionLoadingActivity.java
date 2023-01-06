@@ -51,9 +51,9 @@ public class SolutionLoadingActivity extends AppCompatActivity {
 
     public void calculateSolution() {
         if (isOrdered) {
-            Solver greedyColumnSolver = new NoOrderGreedyColumnSolver(boxList, containerHeight, containerWidth, containerLength);
-            greedyColumnSolver.solve();
-            solution = greedyColumnSolver.getSolution();
+            Solver orderedGreedyColumnSolver = new OrderedGreedyColumnSolver(boxList, containerHeight, containerWidth, containerLength);
+            orderedGreedyColumnSolver.solve();
+            solution = orderedGreedyColumnSolver.getSolution();
         }
         else {
             Solver greedyColumnSolver = new NoOrderGreedyColumnSolver(boxList, containerHeight, containerWidth, containerLength);

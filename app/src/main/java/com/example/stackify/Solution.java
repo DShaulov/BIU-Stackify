@@ -39,6 +39,17 @@ public class Solution implements Serializable {
     }
 
     /**
+     * Marks the boxes inside the solution as packed.
+     */
+    public void markAsPacked() {
+        for (Segment segment: segmentList) {
+            for (Box box : segment.getBoxList()) {
+                box.setPacked(true);
+            }
+        }
+    }
+
+    /**
      * Returns the percentage of boxes in the solution out of total number of boxes.
      * @return
      */
