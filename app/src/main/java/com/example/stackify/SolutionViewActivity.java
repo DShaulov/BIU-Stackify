@@ -184,8 +184,19 @@ public class SolutionViewActivity extends AppCompatActivity {
 
     }
 
+    // TODO
     public void showSolutionInfo() {
+        AlertDialog.Builder dialogBuilder= new AlertDialog.Builder(this);
+        dialogBuilder.setView(R.layout.dialog_solution_viewer);
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
 
+            }
+        });
+        alertDialog.show();
     }
 
     public void rearrangeSolution() {
