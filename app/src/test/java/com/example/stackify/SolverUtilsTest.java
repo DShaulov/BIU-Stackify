@@ -34,5 +34,17 @@ public class SolverUtilsTest extends TestCase {
     }
 
     public void testRectangleSpaceIsFree() {
+        int containerHeight = 300;
+        int containerWidth = 200;
+        int xPosition = 50;
+        int yPosition = 50;
+        Box box = new Box(0, 200, 100, 100);
+
+        boolean[][] spaceMatrixFree = new boolean[containerHeight][containerWidth];
+        boolean[][] spaceMatrixOccupied = new boolean[containerHeight][containerWidth];
+        spaceMatrixOccupied[124][101] = true;
+
+        assertEquals(true, SolverUtils.rectangleSpaceIsFree(box, spaceMatrixFree, xPosition, yPosition));
+        assertEquals(false, SolverUtils.rectangleSpaceIsFree(box, spaceMatrixOccupied, xPosition, yPosition));
     }
 }

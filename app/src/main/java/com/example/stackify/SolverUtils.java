@@ -115,4 +115,19 @@ public class SolverUtils {
         }
         return isFree;
     }
+
+    /**
+     * Marks space as occupied in the space matrix
+     * @param box
+     * @param spaceMatrix
+     * @param xPosition
+     * @param yPosition
+     */
+    public static void markSpaceAsOccupied(Box box,boolean[][] spaceMatrix, int xPosition, int yPosition) {
+        for (int i = yPosition; i < yPosition + box.getHeight(); i++) {
+            for (int j = xPosition; j < xPosition + box.getWidth(); j++) {
+                spaceMatrix[i][j] = true;
+            }
+        }
+    }
 }

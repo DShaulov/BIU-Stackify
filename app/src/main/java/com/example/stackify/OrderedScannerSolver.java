@@ -2,7 +2,7 @@ package com.example.stackify;
 
 import java.util.ArrayList;
 
-public class UnorderedScannerSolver implements Solver{
+public class OrderedScannerSolver implements Solver {
     private ArrayList<Box> boxList;
     private int containerHeight;
     private int containerWidth;
@@ -11,7 +11,7 @@ public class UnorderedScannerSolver implements Solver{
     private int totalBoxes;
     private Solution solution;
 
-    public UnorderedScannerSolver(ArrayList<Box> boxList, int containerHeight, int containerWidth, int containerLength){
+    public OrderedScannerSolver(ArrayList<Box> boxList, int containerHeight, int containerWidth, int containerLength){
         this.boxList = boxList;
         this.containerHeight = containerHeight;
         this.containerWidth = containerWidth;
@@ -31,7 +31,7 @@ public class UnorderedScannerSolver implements Solver{
         }
         SolverUtils.discardTooLarge(boxList, containerHeight, containerWidth);
         // Sort all boxes by unpack order
-        BoxSorter.sortByWidth(boxList);
+        BoxSorter.sortByUnpackOrder(boxList);
         int boxIndex = 0;
 
         while (SolverUtils.containerCanFitAnotherSegment(boxIndex, totalBoxes, segmentLen, remainingContainerLength)) {
