@@ -4,7 +4,7 @@ import junit.framework.TestCase;
 
 import java.util.ArrayList;
 
-public class NoOrderGreedyColumnSolverTest extends TestCase {
+public class UnorderedGreedyColumnSolverTest extends TestCase {
     public void testSolutionOneSegment() {
         int containerHeight = 600;
         int containerWidth = 700;
@@ -20,7 +20,7 @@ public class NoOrderGreedyColumnSolverTest extends TestCase {
         testBoxList.add(box3);
         testBoxList.add(box4);
 
-        Solver solver = new NoOrderGreedyColumnSolver(testBoxList, containerHeight, containerWidth, containerLength);
+        Solver solver = new UnorderedGreedyColumnSolver(testBoxList, containerHeight, containerWidth, containerLength);
         solver.solve();
 
         assertEquals(0, box1.getBottomLeft().getX());

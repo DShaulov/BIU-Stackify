@@ -59,4 +59,60 @@ public class SolverUtils {
         }
         return false;
     }
+
+
+    /**
+     * Checks if a box is out of bounds of a container at given position. (According to top-left coordinate)
+     * @param box
+     * @param containerHeight
+     * @param containerWidth
+     * @param xPosition
+     * @param yPosition
+     * @return
+     */
+    public static boolean boxOutOfBounds(Box box, int containerHeight, int containerWidth, int xPosition, int yPosition) {
+        if (box.getHeight() + yPosition > containerHeight || box.getWidth() + xPosition > containerWidth) {
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Checks if the bottom right and top left spaces are occupied
+     * @param box
+     * @param spaceMatrix
+     * @param xPosition
+     * @param yPosition
+     * @return
+     */
+    public static boolean cornersAreOccupied(Box box ,boolean[][] spaceMatrix, int xPosition, int yPosition) {
+        if (spaceMatrix[yPosition][xPosition] || spaceMatrix[yPosition + box.getHeight()][xPosition + box.getWidth()]) {
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * Checks if a rectangular space is unoccupied by another rectangle.
+     * @param box
+     * @param spaceMatrix
+     * @param xPosition
+     * @param yPosition
+     * @return
+     */
+    public static boolean rectangleSpaceIsFree(Box box, boolean[][] spaceMatrix, int xPosition, int yPosition) {
+        boolean isFree = true;
+        for (int i = yPosition; i < yPosition + box.getHeight(); i++) {
+            for (int j = xPosition; j < xPosition + box.getWidth(); j++) {
+                if (spaceMatrix[i][j]) {
+                    isFree = false;
+                    break;
+                }
+            }
+            if (!isFree) {
+                break;
+            }
+        }
+        return isFree;
+    }
 }

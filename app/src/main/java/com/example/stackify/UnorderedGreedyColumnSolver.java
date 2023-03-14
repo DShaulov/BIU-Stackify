@@ -1,14 +1,13 @@
 package com.example.stackify;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 
 /**
  * Computes a solution by dividing the segment into columns and packing each column as high as possible
  * Boxes are sorted by width
  */
-public class NoOrderGreedyColumnSolver implements Solver{
+public class UnorderedGreedyColumnSolver implements Solver{
     private ArrayList<Box> boxList;
     private int containerHeight;
     private int containerWidth;
@@ -17,7 +16,7 @@ public class NoOrderGreedyColumnSolver implements Solver{
     private int totalBoxes;
     private Solution solution;
 
-    public NoOrderGreedyColumnSolver(ArrayList<Box> boxList, int containerHeight, int containerWidth, int containerLength) {
+    public UnorderedGreedyColumnSolver(ArrayList<Box> boxList, int containerHeight, int containerWidth, int containerLength) {
         this.boxList = boxList;
         this.containerHeight = containerHeight;
         this.containerWidth = containerWidth;

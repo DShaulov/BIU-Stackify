@@ -2,11 +2,7 @@ package com.example.stackify;
 
 import java.util.ArrayList;
 
-/**
- * Computes a solution by dividing the segment into columns and packing each column as high as possible
- * Boxes are sorted by unpack order
- */
-public class OrderedGreedyColumnSolver implements Solver {
+public class UnorderedScannerSolver implements Solver{
     private ArrayList<Box> boxList;
     private int containerHeight;
     private int containerWidth;
@@ -15,7 +11,7 @@ public class OrderedGreedyColumnSolver implements Solver {
     private int totalBoxes;
     private Solution solution;
 
-    public OrderedGreedyColumnSolver(ArrayList<Box> boxList, int containerHeight, int containerWidth, int containerLength) {
+    public UnorderedScannerSolver(ArrayList<Box> boxList, int containerHeight, int containerWidth, int containerLength){
         this.boxList = boxList;
         this.containerHeight = containerHeight;
         this.containerWidth = containerWidth;
@@ -35,28 +31,29 @@ public class OrderedGreedyColumnSolver implements Solver {
         }
         SolverUtils.discardTooLarge(boxList, containerHeight, containerWidth);
         // Sort all boxes by unpack order
-        BoxSorter.sortByUnpackOrder(boxList);
+        BoxSorter.sortByWidth(boxList);
         int boxIndex = 0;
-        int xPosition = 0;
-        int yPosition = 0;
+
+        boolean[][] spaceMatrix = new boolean[containerHeight][containerWidth];
         while (SolverUtils.containerCanFitAnotherSegment(boxIndex, totalBoxes, segmentLen, remainingContainerLength)) {
             Segment segment = new Segment(containerHeight, containerWidth, segmentLen);
-            while (SolverUtils.segmentCanFitAnotherColumn(boxList, containerWidth, xPosition, boxIndex, totalBoxes)) {
-                int columnWidth = boxList.get(boxIndex).getWidth();
-                while (SolverUtils.columnCanFitAnotherBox(boxList, containerHeight,yPosition, boxIndex, totalBoxes)) {
-                    Box box = boxList.get(boxIndex);
-                    box.setBottomLeft(new Coordinate(xPosition, yPosition));
-                    segment.addBox(box);
-                    yPosition += box.getHeight();
-                    boxIndex += 1;
+            Box currentBox = boxList.get(boxIndex);
+            // Go over every pixel and look for open space
+            for (int yPosition = 0; yPosition < containerHeight; yPosition++) {
+                for (int xPosition = 0; xPosition < containerWidth; xPosition++) {
+                    // If box will be out of bounds, continue
+                    if (SolverUtils.boxOutOfBounds(currentBox, containerHeight, containerWidth, xPosition, yPosition)) {
+                        continue;
+                    }
+                    if(!SolverUtils.cornersAreOccupied(currentBox, spaceMatrix, xPosition, yPosition)) {
+
+                    }
                 }
-                xPosition += columnWidth;
-                yPosition = 0;
             }
-            xPosition = 0;
             solution.addSegment(segment);
             remainingContainerLength -= segmentLen;
         }
+
     }
 
     @Override
