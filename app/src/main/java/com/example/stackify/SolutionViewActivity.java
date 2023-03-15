@@ -18,6 +18,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -187,13 +188,24 @@ public class SolutionViewActivity extends AppCompatActivity {
     // TODO
     public void showSolutionInfo() {
         AlertDialog.Builder dialogBuilder= new AlertDialog.Builder(this);
-        dialogBuilder.setView(R.layout.dialog_solution_viewer);
+        dialogBuilder.setView(R.layout.dialog_solution_info_viewer);
         AlertDialog alertDialog = dialogBuilder.create();
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {
+                ProgressBar progressBar = findViewById(R.id.progressBar);
+                TextView progressBarPercentTextView = findViewById(R.id.progressBarPercentTextView);
+                TextView unpackedBoxesNumberTextView = findViewById(R.id.unpackedBoxesNumberTextView);
 
+                Integer percentPacked = solution.getNumOfBoxesInSolution() / solution.getNumOfBoxesTotal();
+                progressBarPercentTextView.setText(percentPacked.toString());
+                progressBar.setProgress(percentPacked);
+                String unpackedBoxesString = "";
+//                for (Integer unpackedBox : solution.getUnpackedBoxList()) {
+//                    unpackedBoxesString = unpackedBoxesString + unpackedBox.toString() + ", ";
+//                }
+                unpackedBoxesNumberTextView.setText(unpackedBoxesString);
             }
         });
         alertDialog.show();

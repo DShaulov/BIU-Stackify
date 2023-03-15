@@ -32,4 +32,27 @@ public class DataConverter {
         List<Segment> segmentList = gson.fromJson(segmentListString, type);
         return segmentList;
     }
+
+    // Converts a List<Box> to a string
+    @TypeConverter
+    public String fromBoxListToString(List<Box> list) {
+        if (list == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<Box>>() {}.getType();
+        String json = gson.toJson(list, type);
+        return json;
+    }
+
+    @TypeConverter
+    public List<Box> fromStringToBoxList(String boxListString) {
+        if (boxListString == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<Box>>() {}.getType();
+        List<Box> boxList = gson.fromJson(boxListString, type);
+        return boxList;
+    }
 }

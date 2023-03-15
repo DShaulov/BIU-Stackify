@@ -28,7 +28,7 @@
         android:id="@+id/unpackedBoxesTextView"
         android:layout_width="206dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/rounded_corner"
         android:padding="20px"
         android:text="Unpacked Boxes:"
@@ -36,17 +36,42 @@
         android:textColor="@color/appBlack"
         app:backgroundTint="@color/appGreen"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="wrap_content"
         android:layout_height="54dp"
         android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/percentPackedTextView"
+        app:layout_constraintVertical_bias="0.127" />
+
+
+    <TextView
+        android:id="@+id/unpackedBoxesNumberTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="Test"
+        android:textAlignment="center"
+        android:textColor="@color/appGreen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/unpackedBoxesTextView" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/percentPackedTextView">
 
@@ -55,45 +80,23 @@
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="206dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:max="100"
             android:progress="50"
             android:progressDrawable="@drawable/rounded_progress_bar"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/progressBarTextView"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/progressBarTextView"
-            android:layout_width="wrap_content"
+            android:id="@+id/progressBarPercentTextView"
+            android:layout_width="206dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:gravity="center"
             android:text="Test"
-            android:textColor="@color/appBlack"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:paddingLeft="5dp"
+            android:textColor="@color/appBlack" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/unpackedBoxesNumberTextView"
-        android:layout_width="206dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Test"
-        android:textAlignment="center"
-        android:textColor="@color/appGreen"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/unpackedBoxesTextView"
-        app:layout_constraintVertical_bias="0.0" />
+    </RelativeLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

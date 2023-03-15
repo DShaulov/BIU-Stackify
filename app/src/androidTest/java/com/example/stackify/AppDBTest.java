@@ -15,6 +15,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AppDBTest {
     private SolutionDao dao;
@@ -36,13 +38,18 @@ public class AppDBTest {
 
     @Test
     public void writeAndReadSolution() throws Exception {
-        Solution solution = new Solution(600, 800, 1600, 3);
+        List<Box> boxList = new ArrayList<Box>();
+        Solution solution = new Solution(boxList, 600, 800, 1600, 3);
         solution.setSolutionName("Test Solution");
         Segment segment1 = new Segment(600, 800, 800);
         Segment segment2 = new Segment(600, 800, 800);
         Box seg1box1 = new Box(1, 600, 800, 750);
         Box seg1box2 = new Box(2, 600, 800, 400);
         Box seg2box1 = new Box(3, 600, 800, 800);
+
+        boxList.add(seg1box1);
+        boxList.add(seg1box2);
+        boxList.add(seg2box1);
 
         segment1.addBox(seg1box1);
         segment1.addBox(seg1box2);
@@ -51,12 +58,19 @@ public class AppDBTest {
         solution.addSegment(segment1);
         solution.addSegment(segment2);
 
+        solution.setBoxList(boxList);
+
         dao.insert(solution);
 
         Solution readSolution = dao.get("Test Solution");
 
         assertEquals("Test Solution", readSolution.getSolutionName());
         assertEquals(2, solution.getSegmentList().size());
+
+        List<Box> readBoxList = readSolution.getBoxList();
+        assertEquals(400, readBoxList.get(1).getLength());
+        assertEquals(800, readBoxList.get(2).getLength());
+
         Segment readSeg1 = solution.getSegmentList().get(0);
         Segment readSeg2 = solution.getSegmentList().get(1);
         assertEquals(2, readSeg1.getNumOfBoxes());

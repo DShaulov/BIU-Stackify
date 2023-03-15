@@ -18,7 +18,7 @@ public class UnorderedScannerSolver implements Solver{
         this.containerLength = containerLength;
         this.remainingContainerLength = containerLength;
         this.totalBoxes = boxList.size();
-        this.solution = new Solution(containerHeight, containerWidth, containerLength, boxList.size());
+        this.solution = new Solution(boxList, containerHeight, containerWidth, containerLength, boxList.size());
     }
 
     @Override
@@ -53,6 +53,7 @@ public class UnorderedScannerSolver implements Solver{
                             if (SolverUtils.rectangleSpaceIsFree(currentBox, spaceMatrix, xPosition, yPosition)) {
                                 currentBox.setBottomLeft(new Coordinate(xPosition, yPosition));
                                 segment.addBox(currentBox);
+                                currentBox.setPacked(true);
                                 SolverUtils.markSpaceAsOccupied(currentBox, spaceMatrix, xPosition, yPosition);
                                 boxIndex += 1;
                                 currentBox = boxList.get(boxIndex);

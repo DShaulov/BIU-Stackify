@@ -10,6 +10,7 @@ import java.util.List;
 
 @Entity
 public class Solution implements Serializable {
+    private List<Box> boxList;
     @PrimaryKey
     @NonNull
     private String solutionName;
@@ -22,7 +23,11 @@ public class Solution implements Serializable {
     private int numOfBoxesTotal;
     private int numOfBoxesInSolution;
 
-    public Solution(int containerHeight, int containerWidth, int containerLength, int numOfBoxesTotal) {
+
+
+
+    public Solution(List<Box> boxList ,int containerHeight, int containerWidth, int containerLength, int numOfBoxesTotal) {
+        this.boxList = boxList;
         this.solutionName = "Solution";
         this.containerHeight = containerHeight;
         this.containerWidth = containerWidth;
@@ -49,6 +54,14 @@ public class Solution implements Serializable {
         }
     }
 
+
+    public List<Box> getBoxList() {
+        return boxList;
+    }
+
+    public void setBoxList(List<Box> boxList) {
+        this.boxList = boxList;
+    }
     /**
      * Returns the percentage of boxes in the solution out of total number of boxes.
      * @return

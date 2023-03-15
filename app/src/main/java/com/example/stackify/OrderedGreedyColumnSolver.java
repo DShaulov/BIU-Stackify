@@ -22,7 +22,7 @@ public class OrderedGreedyColumnSolver implements Solver {
         this.containerLength = containerLength;
         this.remainingContainerLength = containerLength;
         this.totalBoxes = boxList.size();
-        this.solution = new Solution(containerHeight, containerWidth, containerLength, boxList.size());
+        this.solution = new Solution(boxList, containerHeight, containerWidth, containerLength, boxList.size());
     }
 
     @Override
