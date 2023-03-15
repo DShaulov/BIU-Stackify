@@ -53,4 +53,28 @@ public class BoxSorterTest extends TestCase {
         BoxSorter.sortByUnpackOrder(testBoxList);
         assertEquals(5, testBoxList.get(0).getUnpackOrder());
     }
+
+    public void testSortByAreaAscending() {
+        ArrayList<Box> testBoxList = new ArrayList<Box>();
+        testBoxList.add(new Box(1, 200, 300, 400));
+        testBoxList.add(new Box(2, 850, 900, 1000));
+        testBoxList.add(new Box(3, 450, 750, 650));
+        testBoxList.add(new Box(4, 200, 100, 600));
+        testBoxList.add(new Box(5, 200, 200, 400));
+
+        BoxSorter.sortByAreaAscending(testBoxList);
+        assertEquals(4, testBoxList.get(0).getUnpackOrder());
+    }
+
+    public void testSortByAreaDescending() {
+        ArrayList<Box> testBoxList = new ArrayList<Box>();
+        testBoxList.add(new Box(1, 200, 300, 400));
+        testBoxList.add(new Box(2, 850, 900, 1000));
+        testBoxList.add(new Box(3, 450, 750, 650));
+        testBoxList.add(new Box(4, 200, 100, 600));
+        testBoxList.add(new Box(5, 200, 200, 400));
+
+        BoxSorter.sortByAreaDescending(testBoxList);
+        assertEquals(2, testBoxList.get(0).getUnpackOrder());
+    }
 }

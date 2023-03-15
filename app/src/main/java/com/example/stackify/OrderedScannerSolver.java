@@ -76,7 +76,7 @@ public class OrderedScannerSolver implements Solver {
                 }
             }
         }
-
+        solution.markAsPacked();
     }
 
     @Override

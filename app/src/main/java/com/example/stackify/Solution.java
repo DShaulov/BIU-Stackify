@@ -67,7 +67,7 @@ public class Solution implements Serializable {
      * @return
      */
     public float getCoverage() {
-        return (numOfBoxesInSolution / numOfBoxesTotal) * 100;
+        return (((float)numOfBoxesInSolution / (float)numOfBoxesTotal) * 100);
     }
 
     @NonNull

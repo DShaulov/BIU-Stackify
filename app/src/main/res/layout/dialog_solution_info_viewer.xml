@@ -93,7 +93,7 @@
             android:layout_width="206dp"
             android:layout_height="wrap_content"
             android:text="Test"
-            android:paddingLeft="5dp"
+            android:paddingLeft="177dp"
             android:textColor="@color/appBlack" />
 
     </RelativeLayout>

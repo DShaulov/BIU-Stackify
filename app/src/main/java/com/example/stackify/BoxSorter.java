@@ -40,5 +40,20 @@ public class BoxSorter {
             }
         });
     }
-
+    public static void sortByAreaAscending(ArrayList<Box> boxList) {
+        Collections.sort(boxList, new Comparator<Box>() {
+            @Override
+            public int compare(Box box1, Box box2) {
+                return (box1.getHeight() * box1.getWidth()) - (box2.getHeight() * box2.getWidth());
+            }
+        });
+    }
+    public static void sortByAreaDescending(ArrayList<Box> boxList) {
+        Collections.sort(boxList, new Comparator<Box>() {
+            @Override
+            public int compare(Box box1, Box box2) {
+                return (box2.getHeight() * box2.getWidth()) - (box1.getHeight() * box1.getWidth());
+            }
+        });
+    }
 }

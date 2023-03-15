@@ -194,18 +194,25 @@ public class SolutionViewActivity extends AppCompatActivity {
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {
-                ProgressBar progressBar = findViewById(R.id.progressBar);
-                TextView progressBarPercentTextView = findViewById(R.id.progressBarPercentTextView);
-                TextView unpackedBoxesNumberTextView = findViewById(R.id.unpackedBoxesNumberTextView);
+                ProgressBar progressBar = alertDialog.findViewById(R.id.progressBar);
+                TextView progressBarPercentTextView = alertDialog.findViewById(R.id.progressBarPercentTextView);
+                TextView unpackedBoxesNumberTextView = alertDialog.findViewById(R.id.unpackedBoxesNumberTextView);
 
-                Integer percentPacked = solution.getNumOfBoxesInSolution() / solution.getNumOfBoxesTotal();
-                progressBarPercentTextView.setText(percentPacked.toString());
+                Integer percentPacked = Math.round(solution.getCoverage());
+                progressBarPercentTextView.setText(percentPacked.toString() + "%");
+                long paddingLeftDp = Math.round(((float)percentPacked / 100.0) * 206) - 30;
+                float scale = getResources().getDisplayMetrics().density;
+                int paddingLeftPx = (int) (paddingLeftDp * scale + 0.5f);
+                progressBarPercentTextView.setPadding(paddingLeftPx, 0, 0, 0);
                 progressBar.setProgress(percentPacked);
                 String unpackedBoxesString = "";
-//                for (Integer unpackedBox : solution.getUnpackedBoxList()) {
-//                    unpackedBoxesString = unpackedBoxesString + unpackedBox.toString() + ", ";
-//                }
-                unpackedBoxesNumberTextView.setText(unpackedBoxesString);
+                for (Box box : solution.getBoxList()) {
+                    if (!box.isPacked()) {
+                        Integer unpackedOrder = box.getUnpackOrder();
+                        unpackedBoxesString = unpackedBoxesString + unpackedOrder + ", ";
+                    }
+                }
+                unpackedBoxesNumberTextView.setText(unpackedBoxesString.substring(0, unpackedBoxesString.length() - 2));
             }
         });
         alertDialog.show();

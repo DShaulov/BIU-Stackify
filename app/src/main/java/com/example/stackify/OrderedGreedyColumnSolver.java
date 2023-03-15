@@ -57,6 +57,7 @@ public class OrderedGreedyColumnSolver implements Solver {
             solution.addSegment(segment);
             remainingContainerLength -= segmentLen;
         }
+        solution.markAsPacked();
     }
 
     @Override

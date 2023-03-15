@@ -31,7 +31,7 @@ public class UnorderedScannerSolver implements Solver{
         }
         SolverUtils.discardTooLarge(boxList, containerHeight, containerWidth);
         // Sort all boxes by unpack order
-        BoxSorter.sortByWidth(boxList);
+        BoxSorter.sortByAreaAscending(boxList);
         int boxIndex = 0;
 
         while (SolverUtils.containerCanFitAnotherSegment(boxIndex, totalBoxes, segmentLen, remainingContainerLength)) {
@@ -53,7 +53,6 @@ public class UnorderedScannerSolver implements Solver{
                             if (SolverUtils.rectangleSpaceIsFree(currentBox, spaceMatrix, xPosition, yPosition)) {
                                 currentBox.setBottomLeft(new Coordinate(xPosition, yPosition));
                                 segment.addBox(currentBox);
-                                currentBox.setPacked(true);
                                 SolverUtils.markSpaceAsOccupied(currentBox, spaceMatrix, xPosition, yPosition);
                                 boxIndex += 1;
                                 currentBox = boxList.get(boxIndex);
@@ -77,7 +76,7 @@ public class UnorderedScannerSolver implements Solver{
                 }
             }
         }
-
+        solution.markAsPacked();
     }
 
     @Override
