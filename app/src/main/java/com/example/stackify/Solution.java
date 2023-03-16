@@ -5,7 +5,9 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -22,7 +24,7 @@ public class Solution implements Serializable {
     private List<Segment> segmentList;
     private int numOfBoxesTotal;
     private int numOfBoxesInSolution;
-
+    private LocalDate date;
 
 
 
@@ -35,6 +37,7 @@ public class Solution implements Serializable {
         this.segmentList = new ArrayList<>();
         this.numOfBoxesTotal = numOfBoxesTotal;
         this.numOfBoxesInSolution = 0;
+        this.date = LocalDate.now();
     }
 
     public void addSegment(Segment segment) {
@@ -141,5 +144,13 @@ public class Solution implements Serializable {
 
     public void setNumOfBoxesInSolution(int numOfBoxesInSolution) {
         this.numOfBoxesInSolution = numOfBoxesInSolution;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }

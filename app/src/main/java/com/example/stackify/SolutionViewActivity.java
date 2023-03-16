@@ -1,6 +1,7 @@
 package com.example.stackify;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -17,15 +18,19 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
 public class SolutionViewActivity extends AppCompatActivity {
+    private AppDB db;
+    private SolutionDao solutionDao;
     private Button nextSegmentBtn;
     private Button prevSegmentBtn;
     private Button optionsBtn;
@@ -48,6 +53,12 @@ public class SolutionViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solution_view);
+
+        db = Room.databaseBuilder(getApplicationContext(), AppDB.class, "StackifyDB")
+                .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
+                .build();
+        solutionDao = db.solutionDao();
 
         nextSegmentBtn = findViewById(R.id.nextSegmentBtn);
         prevSegmentBtn = findViewById(R.id.prevSegmentBtn);
@@ -182,7 +193,34 @@ public class SolutionViewActivity extends AppCompatActivity {
     }
 
     public void saveSolution() {
+        // Prompt user to enter name for solution
+        AlertDialog.Builder dialogBuilder= new AlertDialog.Builder(this);
+        dialogBuilder.setView(R.layout.dialog_solution_saver);
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                EditText enterNameEditText = alertDialog.findViewById(R.id.enterNameEditText);
+                Button enterNameSaveBtn = alertDialog.findViewById(R.id.enterNameSaveBtn);
 
+                enterNameSaveBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String solutionName = enterNameEditText.getText().toString();
+                        if (solutionName.isEmpty()) {
+                            enterNameEditText.setHint("*Cannot be empty");
+                            return;
+                        }
+                        solution.setDate(LocalDate.now());
+                        solution.setSolutionName(solutionName);
+                        solutionDao.insert(solution);
+                        alertDialog.cancel();
+                    }
+                });
+            }
+        });
+        alertDialog.show();
     }
 
     // TODO

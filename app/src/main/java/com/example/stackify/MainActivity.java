@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         db = Room.databaseBuilder(getApplicationContext(), AppDB.class, "StackifyDB")
                 .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
                 .build();
         solutionDao = db.solutionDao();
 
@@ -113,7 +114,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
     private void startPrevSolutionsActivity() {
-
+        List<Solution> prevSolutions = solutionDao.index();
+        if (prevSolutions.isEmpty()) {
+            Toast.makeText(MainActivity.this,"No previous solutions found", Toast.LENGTH_LONG).show();
+            return;
+        }
     }
 
     private void launchDialog() {
