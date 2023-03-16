@@ -119,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this,"No previous solutions found", Toast.LENGTH_LONG).show();
             return;
         }
+        Intent intent = new Intent(this, PreviousSolutionsRecyclerView.class);
+        startActivity(intent);
     }
 
     private void launchDialog() {
