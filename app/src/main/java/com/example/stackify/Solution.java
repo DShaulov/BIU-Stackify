@@ -24,6 +24,7 @@ public class Solution implements Serializable {
     private List<Segment> segmentList;
     private int numOfBoxesTotal;
     private int numOfBoxesInSolution;
+    private boolean isOrdered;
     private LocalDate date;
 
 
@@ -54,6 +55,15 @@ public class Solution implements Serializable {
             for (Box box : segment.getBoxList()) {
                 box.setPacked(true);
             }
+        }
+    }
+
+    /**
+     * Marks all boxes in the box list as unpacked.
+     */
+    public void markAsUnpacked() {
+        for (Box box : boxList) {
+            box.setPacked(false);
         }
     }
 
@@ -144,6 +154,14 @@ public class Solution implements Serializable {
 
     public void setNumOfBoxesInSolution(int numOfBoxesInSolution) {
         this.numOfBoxesInSolution = numOfBoxesInSolution;
+    }
+
+    public boolean isOrdered() {
+        return isOrdered;
+    }
+
+    public void setOrdered(boolean ordered) {
+        isOrdered = ordered;
     }
 
     public LocalDate getDate() {

@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
             public void onCancel(DialogInterface dialogInterface) {
                 uploadBtn.setVisibility(View.VISIBLE);
                 prevSolsBtn.setVisibility(View.VISIBLE);
+                boxList.clear();
             }
         });
         uploadBtn.setVisibility(View.INVISIBLE);

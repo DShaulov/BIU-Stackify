@@ -1,6 +1,7 @@
 package com.example.stackify;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderedScannerSolver implements Solver {
     private ArrayList<Box> boxList;
@@ -19,28 +20,56 @@ public class OrderedScannerSolver implements Solver {
         this.remainingContainerLength = containerLength;
         this.totalBoxes = boxList.size();
         this.solution = new Solution(boxList, containerHeight, containerWidth, containerLength, boxList.size());
+        this.solution.setOrdered(true);
     }
 
     @Override
     public void solve() {
-        // Calculate segment length and rotate boxes to fill as much of the depth as possible
+        // Calculate segment length
         int segmentLen = SegmentLengthSelector.minVarianceDim(boxList).getDimValue();
+
+        // Create a space matrix for each segment
+        int numOfSegments = containerLength / segmentLen;
+        List<Segment> segmentList = new ArrayList<>();
+        List<boolean[][]> spaceMatrixList = new ArrayList<>();
+        for (int i = 0; i < numOfSegments; i++) {
+            segmentList.add(new Segment(containerHeight, containerWidth, segmentLen));
+            spaceMatrixList.add(new boolean[containerHeight + 1][containerWidth + 1]);
+        }
+
+        // Place manually placed boxes and rotate boxes to fill as much of segment space as possible
         for (Box box : boxList) {
             box.rotateToClosestDim(segmentLen);
             box.rotateToMaxWidth();
+            if (box.isManuallyPlaced()) {
+                int segmentNum = box.getSegmentNum();
+                Segment boxSegment = segmentList.get(segmentNum - 1);
+                boolean[][] boxSpaceMatrix = spaceMatrixList.get(segmentNum - 1);
+
+                boxSegment.addBox(box);
+                SolverUtils.markSpaceAsOccupied(box, boxSpaceMatrix, box.getBottomLeft().getX(), box.getBottomLeft().getY());
+            }
         }
+
+        // Remove boxes too large to fit
         SolverUtils.discardTooLarge(boxList, containerHeight, containerWidth);
-        // Sort all boxes by unpack order
+
+        // Sort all boxes by area - ascending
         BoxSorter.sortByUnpackOrder(boxList);
         int boxIndex = 0;
 
-        while (SolverUtils.containerCanFitAnotherSegment(boxIndex, totalBoxes, segmentLen, remainingContainerLength)) {
-            boolean[][] spaceMatrix = new boolean[containerHeight + 1][containerWidth + 1];
-            Segment segment = new Segment(containerHeight, containerWidth, segmentLen);
+        for (int i = 0; i < numOfSegments; i++) {
+            boolean[][] spaceMatrix = spaceMatrixList.get(i);
+            Segment segment = segmentList.get(i);
 
             boolean segmentHasRoom = true;
             while (segmentHasRoom) {
                 Box currentBox = boxList.get(boxIndex);
+                // If box is manually placed, continue
+                if (currentBox.isManuallyPlaced()) {
+                    boxIndex += 1;
+                    continue;
+                }
                 // Go over every pixel and look for open space
                 boolean foundSpace = false;
                 for (int yPosition = 0; yPosition < containerHeight; yPosition++) {

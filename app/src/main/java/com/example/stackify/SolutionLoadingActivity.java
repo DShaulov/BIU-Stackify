@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class SolutionLoadingActivity extends AppCompatActivity {
     private boolean isOrdered;
     private boolean isPreviousSolution;
+    private boolean isRearrangedSolution;
     private Solution solution;
     private ArrayList<Box> boxList;
     private int containerHeight;
@@ -26,8 +27,16 @@ public class SolutionLoadingActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getBundleExtra("Bundle");
         isPreviousSolution = getIntent().getBooleanExtra("isPreviousSolution", false);
+        isRearrangedSolution = getIntent().getBooleanExtra("isRearrangedSolution", false);
         if (isPreviousSolution) {
             solution = (Solution) bundle.getSerializable("solution");
+        }
+        else if (isRearrangedSolution) {
+            solution = (Solution) bundle.getSerializable("solution");
+            boxList = (ArrayList<Box>) solution.getBoxList();
+            containerHeight = solution.getContainerHeight();
+            containerWidth = solution.getContainerWidth();
+            containerLength = solution.getContainerLength();
         }
         else {
             boxList = (ArrayList<Box>) bundle.getSerializable("boxList");
@@ -41,7 +50,10 @@ public class SolutionLoadingActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!isPreviousSolution) {
+        if (isRearrangedSolution) {
+            calculateRearrangedSolution();
+        }
+        else if (!isPreviousSolution) {
             calculateSolution();
         }
         Handler handler = new Handler();
@@ -61,6 +73,19 @@ public class SolutionLoadingActivity extends AppCompatActivity {
 
     public void calculateSolution() {
         if (isOrdered) {
+            Solver orderedScannerSolver = new OrderedScannerSolver(boxList, containerHeight, containerWidth, containerLength);
+            orderedScannerSolver.solve();
+            solution = orderedScannerSolver.getSolution();
+        }
+        else {
+            Solver unorderedScannerSolver = new UnorderedScannerSolver(boxList, containerHeight, containerWidth, containerLength);
+            unorderedScannerSolver.solve();
+            solution = unorderedScannerSolver.getSolution();
+        }
+    }
+
+    public void calculateRearrangedSolution() {
+        if (solution.isOrdered()) {
             Solver orderedScannerSolver = new OrderedScannerSolver(boxList, containerHeight, containerWidth, containerLength);
             orderedScannerSolver.solve();
             solution = orderedScannerSolver.getSolution();

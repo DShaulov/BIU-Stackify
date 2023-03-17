@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -307,11 +308,108 @@ public class SolutionViewActivity extends AppCompatActivity {
                             Toast.makeText(SolutionViewActivity.this,"Y Position must be (0-" + solution.getContainerHeight() + ")", Toast.LENGTH_LONG).show();
                             return;
                         }
+                        Box manuallyPlacedBox = null;
+                        for (Box box : solution.getBoxList()) {
+                            if (box.getUnpackOrder() == boxNum) {
+                                manuallyPlacedBox = box;
+                                break;
+                            }
+                        }
+                        if (boxIsOutOfBounds(manuallyPlacedBox, xPosition, yPosition)) {
+                            Toast.makeText(SolutionViewActivity.this,"Box is out of bounds", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        if (spaceIsAlreadyTaken(manuallyPlacedBox, segmentNum, xPosition, yPosition)) {
+                            Toast.makeText(SolutionViewActivity.this,"Space is already taken by another box", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        loadNewSolution(manuallyPlacedBox, segmentNum, xPosition, yPosition);
                     }
                 });
             }
         });
         alertDialog.show();
+    }
+
+    /**
+     * Checks if manually placed box is out of segment bounds.
+     * @param box
+     * @param xPosition
+     * @param yPosition
+     * @return
+     */
+    public boolean boxIsOutOfBounds(Box box, int xPosition, int yPosition) {
+        boolean outOfBoundsOnX = solution.getContainerWidth() < xPosition + box.getWidth();
+        boolean outOfBoundsOnY = solution.getContainerHeight() < yPosition + box.getHeight();
+        if (outOfBoundsOnX || outOfBoundsOnY) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks if manually placed box occupies a taken space.
+     */
+    public boolean spaceIsAlreadyTaken(Box manuallyPlacedBox, int segmentNum, int xPosition, int yPosition) {
+        Segment chosenSegment = solution.getSegmentList().get(segmentNum - 1);
+        boolean isTaken = false;
+        for (Box box : chosenSegment.getBoxList()) {
+            if (box.isManuallyPlaced()) {
+                if (boxesOverlap(manuallyPlacedBox, box, xPosition, yPosition)) {
+                    isTaken = true;
+                    break;
+                }
+            }
+        }
+        return isTaken;
+    }
+
+    /**
+     * Checks if two placed boxes overlap
+     * @param manuallyPlacedBox
+     * @param segmentBox
+     * @param xPosition
+     * @param yPosition
+     * @return
+     */
+    public boolean boxesOverlap(Box manuallyPlacedBox, Box segmentBox, int xPosition, int yPosition) {
+        Coordinate bottomLeftBox1 = new Coordinate(xPosition, yPosition);
+        Coordinate topRightBox1 = new Coordinate(xPosition + manuallyPlacedBox.getWidth(), yPosition + manuallyPlacedBox.getHeight());
+        Coordinate bottomLeftBox2 = segmentBox.getBottomLeft();
+
+        Coordinate topRightBox2 = new Coordinate(bottomLeftBox2.getX() + segmentBox.getWidth(), bottomLeftBox2.getY() + segmentBox.getHeight());
+        // If one box is to the side of another, they do not overlap
+        if (topRightBox1.getX() < bottomLeftBox2.getX() || topRightBox2.getX() < bottomLeftBox1.getX()) {
+            return false;
+        }
+        // If one box is above another, they do not overlap
+        if (topRightBox1.getY() < bottomLeftBox2.getY() || topRightBox2.getY() < bottomLeftBox1.getY()) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Loads a new solution after manual rearrangement
+     * @param manuallyPlacedBox
+     * @param segmentNum
+     * @param xPosition
+     * @param yPosition
+     */
+    public void loadNewSolution(Box manuallyPlacedBox, int segmentNum, int xPosition, int yPosition) {
+        solution.markAsUnpacked();
+
+        if (manuallyPlacedBox != null) {
+            manuallyPlacedBox.setManuallyPlaced(true);
+            manuallyPlacedBox.setBottomLeft(new Coordinate(xPosition, yPosition));
+            manuallyPlacedBox.setSegmentNum(segmentNum);
+        }
+        Intent intent = new Intent(this, SolutionLoadingActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("solution", (Serializable) solution);
+        intent.putExtra("Bundle", bundle);
+        intent.putExtra("isRearrangedSolution", true);
+        startActivity(intent);
     }
 
     public void updateSegmentNumTextView() {

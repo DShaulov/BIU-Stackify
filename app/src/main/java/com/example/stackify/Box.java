@@ -154,4 +154,19 @@ public class Box implements Serializable {
     public void setPacked(boolean packed) {
         isPacked = packed;
     }
+    public int getSegmentNum() {
+        return segmentNum;
+    }
+
+    public void setSegmentNum(int segmentNum) {
+        this.segmentNum = segmentNum;
+    }
+
+    public boolean isManuallyPlaced() {
+        return manuallyPlaced;
+    }
+
+    public void setManuallyPlaced(boolean manuallyPlaced) {
+        this.manuallyPlaced = manuallyPlaced;
+    }
 }

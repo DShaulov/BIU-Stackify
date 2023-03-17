@@ -10,7 +10,6 @@ public class Segment implements Serializable {
     private int numOfBoxes;
     private ArrayList<Box> boxList;
 
-
     public Segment(int height, int width, int length) {
         this.height = height;
         this.width = width;
