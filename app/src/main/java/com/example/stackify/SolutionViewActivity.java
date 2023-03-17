@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -257,7 +258,60 @@ public class SolutionViewActivity extends AppCompatActivity {
     }
 
     public void rearrangeSolution() {
+        AlertDialog.Builder dialogBuilder= new AlertDialog.Builder(this);
+        dialogBuilder.setView(R.layout.dialog_solution_rearrange_selection);
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                EditText enterBoxNumEditText = alertDialog.findViewById(R.id.enterBoxNumEditText);
+                EditText enterSegmentNumEditText = alertDialog.findViewById(R.id.enterSegmentNumEditText);
+                EditText enterHorizontalPosEditText = alertDialog.findViewById(R.id.enterHorizontalPosEditText);
+                EditText enterVerticalPosEditText = alertDialog.findViewById(R.id.enterVerticalPosEditText);
+                Button rearrangeOkBtn = alertDialog.findViewById(R.id.rearrangeOkBtn);
 
+                enterSegmentNumEditText.setHint("*Segment Number (1-" + solution.getNumOfSegments() + ")");
+                enterHorizontalPosEditText.setHint("*X Position (0-" + solution.getContainerWidth() + ")");
+                enterVerticalPosEditText.setHint("*Y Position (0-" + solution.getContainerHeight() + ")");
+
+                rearrangeOkBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String boxNumString = enterBoxNumEditText.getText().toString();
+                        String segmentNumString = enterSegmentNumEditText.getText().toString();
+                        String xPositionString = enterHorizontalPosEditText.getText().toString();
+                        String yPositionString = enterVerticalPosEditText.getText().toString();
+                        if (boxNumString.isEmpty() || segmentNumString.isEmpty() || xPositionString.isEmpty() || yPositionString.isEmpty()) {
+                            Toast.makeText(SolutionViewActivity.this,"Fields cannot be empty", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        Integer boxNum = Integer.parseInt(enterBoxNumEditText.getText().toString());
+                        Integer segmentNum = Integer.parseInt(enterSegmentNumEditText.getText().toString());
+                        Integer xPosition = Integer.parseInt(enterHorizontalPosEditText.getText().toString());
+                        Integer yPosition = Integer.parseInt(enterVerticalPosEditText.getText().toString());
+
+                        if (solution.getBoxList().size() < boxNum) {
+                            Toast.makeText(SolutionViewActivity.this,"Box number " + boxNum + " does not exist", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        if (solution.getSegmentList().size() < segmentNum) {
+                            Toast.makeText(SolutionViewActivity.this,"Segment Number must be (1-" + solution.getNumOfSegments() + ")", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        if (solution.getContainerWidth() < xPosition) {
+                            Toast.makeText(SolutionViewActivity.this,"X Position must be (0-" + solution.getContainerWidth() + ")", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        if (solution.getContainerHeight() < yPosition) {
+                            Toast.makeText(SolutionViewActivity.this,"Y Position must be (0-" + solution.getContainerHeight() + ")", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                    }
+                });
+            }
+        });
+        alertDialog.show();
     }
 
     public void updateSegmentNumTextView() {

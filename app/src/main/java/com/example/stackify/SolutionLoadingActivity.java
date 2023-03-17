@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class SolutionLoadingActivity extends AppCompatActivity {
     private boolean isOrdered;
+    private boolean isPreviousSolution;
     private Solution solution;
     private ArrayList<Box> boxList;
     private int containerHeight;
@@ -24,11 +25,27 @@ public class SolutionLoadingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_solution_loading);
 
         Bundle bundle = getIntent().getBundleExtra("Bundle");
-        boxList = (ArrayList<Box>) bundle.getSerializable("boxList");
-        isOrdered = getIntent().getBooleanExtra("isOrdered", false);
-        containerHeight = getIntent().getIntExtra("containerHeight", 0);
-        containerWidth = getIntent().getIntExtra("containerWidth", 0);
-        containerLength = getIntent().getIntExtra("containerLength", 0);
+        isPreviousSolution = getIntent().getBooleanExtra("isPreviousSolution", false);
+        if (isPreviousSolution) {
+            solution = (Solution) bundle.getSerializable("solution");
+        }
+        else {
+            boxList = (ArrayList<Box>) bundle.getSerializable("boxList");
+            isOrdered = getIntent().getBooleanExtra("isOrdered", false);
+            containerHeight = getIntent().getIntExtra("containerHeight", 0);
+            containerWidth = getIntent().getIntExtra("containerWidth", 0);
+            containerLength = getIntent().getIntExtra("containerLength", 0);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!isPreviousSolution) {
+            calculateSolution();
+        }
+        Handler handler = new Handler();
+        handler.postDelayed(launchTask, 1000);
     }
 
     private Runnable launchTask = new Runnable() {
@@ -41,13 +58,6 @@ public class SolutionLoadingActivity extends AppCompatActivity {
         }
     };
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        calculateSolution();
-        Handler handler = new Handler();
-        handler.postDelayed(launchTask, 1000);
-    }
 
     public void calculateSolution() {
         if (isOrdered) {
@@ -60,7 +70,6 @@ public class SolutionLoadingActivity extends AppCompatActivity {
             unorderedScannerSolver.solve();
             solution = unorderedScannerSolver.getSolution();
         }
-
     }
 
     @Override

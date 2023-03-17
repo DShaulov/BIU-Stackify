@@ -1,6 +1,7 @@
 package com.example.stackify;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class UnorderedScannerSolver implements Solver{
     private ArrayList<Box> boxList;
@@ -29,6 +30,15 @@ public class UnorderedScannerSolver implements Solver{
             box.rotateToClosestDim(segmentLen);
             box.rotateToMaxWidth();
         }
+
+        int numOfSegments = containerLength / segmentLen;
+        List<Segment> segmentList = new ArrayList<>();
+        List<boolean[][]> spaceMatrixList = new ArrayList<>();
+        for (int i = 0; i < numOfSegments; i++) {
+            segmentList.add(new Segment(containerHeight, containerWidth, segmentLen));
+            spaceMatrixList.add(new boolean[containerHeight + 1][containerWidth + 1]);
+        }
+
         SolverUtils.discardTooLarge(boxList, containerHeight, containerWidth);
         // Sort all boxes by unpack order
         BoxSorter.sortByAreaAscending(boxList);
