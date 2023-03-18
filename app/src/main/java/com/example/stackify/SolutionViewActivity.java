@@ -50,6 +50,8 @@ public class SolutionViewActivity extends AppCompatActivity {
     private ArrayList<Integer> colors;
     private int appGreen;
     private int appBlack;
+    private int cardboardDark;
+    private int cardboardLight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +88,9 @@ public class SolutionViewActivity extends AppCompatActivity {
         colors = new ArrayList<>();
         appGreen = Color.rgb(29, 185, 84);
         appBlack = Color.rgb(25, 20, 20);
-        Integer[] colorList = new Integer[] {appGreen};
+        cardboardLight = Color.rgb(154, 113, 65);
+        cardboardDark = Color.rgb(126, 92, 53);
+        Integer[] colorList = new Integer[] {cardboardLight};
         colors.addAll(Arrays.asList(colorList));
 
         nextSegmentBtn.setOnClickListener(new View.OnClickListener() {
@@ -117,8 +121,18 @@ public class SolutionViewActivity extends AppCompatActivity {
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
         Random randomizer = new Random();
         Segment segment = solution.getSegmentList().get(segmentNum);
+        int backgroundOffset = 50;
         for (Box box : segment.getBoxList()) {
             Integer randomColor = colors.get(randomizer.nextInt(colors.size()));
+
+            // Draw a background rectangle at offset
+//            int top = this.containerHeight - box.getBottomLeft().getY() - backgroundOffset;
+//            int bottom = top - box.getHeight();
+//            int left = box.getBottomLeft().getX();
+//            int right = left + box.getWidth() + backgroundOffset;
+//            paint.setColor(appGreen);
+//            canvas.drawRect(left, top, right, bottom, paint);
+
             // Since (0,0) is the top-left corner of the device, y-axis calculations need to take that into account
             int top = this.containerHeight - box.getBottomLeft().getY();
             int bottom = top - box.getHeight();

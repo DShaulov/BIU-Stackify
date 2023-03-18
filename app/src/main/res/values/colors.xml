@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="appBlack">#191414</color>
     <color name="appGreen">#1DB954</color>
+    <color name="cardboardDark">#7E5C35</color>
+    <color name="cardboardLight">#9A7141</color>
 </resources>
