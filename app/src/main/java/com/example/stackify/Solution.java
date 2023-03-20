@@ -171,4 +171,14 @@ public class Solution implements Serializable {
     public void setDate(LocalDate date) {
         this.date = date;
     }
+
+    public void updateNumOfBoxesInSolution() {
+        int count = 0;
+        for (Segment segment : segmentList) {
+            for (Box box : segment.getBoxList()) {
+                count += 1;
+            }
+        }
+        setNumOfBoxesInSolution(count);
+    }
 }

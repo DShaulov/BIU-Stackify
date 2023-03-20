@@ -18,7 +18,7 @@ public class SolverUtils {
         while (iterator.hasNext()){
             Box box = iterator.next();
             if (containerHeight < box.getHeight() || containerWidth < box.getWidth()) {
-                iterator.remove();
+                box.setTooLarge(true);
             }
         }
     }

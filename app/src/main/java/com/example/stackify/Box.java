@@ -14,6 +14,7 @@ public class Box implements Serializable {
     private boolean isPacked;
     private int segmentNum;
     private boolean manuallyPlaced;
+    private boolean isTooLarge;
     private Coordinate bottomLeft;
 
 
@@ -24,6 +25,7 @@ public class Box implements Serializable {
         this.length = length;
         this.unpackOrder = unpackOrder;
         this.manuallyPlaced = false;
+        this.isTooLarge = false;
     }
 
     // Rotates the box to its maximum possible length
@@ -169,4 +171,13 @@ public class Box implements Serializable {
     public void setManuallyPlaced(boolean manuallyPlaced) {
         this.manuallyPlaced = manuallyPlaced;
     }
+
+    public boolean isTooLarge() {
+        return isTooLarge;
+    }
+
+    public void setTooLarge(boolean tooLarge) {
+        isTooLarge = tooLarge;
+    }
+
 }

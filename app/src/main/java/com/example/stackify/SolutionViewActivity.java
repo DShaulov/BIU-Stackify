@@ -139,7 +139,9 @@ public class SolutionViewActivity extends AppCompatActivity {
             int left = box.getBottomLeft().getX();
             int right = left + box.getWidth();
             paint.setColor(randomColor);
+            paint.setShadowLayer(10.0f, 2.0f, 2.0f, 0xFF000000);
             canvas.drawRect(left, top, right, bottom, paint);
+            paint.setShadowLayer(0, 0, 0, 0);
 
             // Draw a black frame around the rectangle
             paint.setStyle(Paint.Style.STROKE);

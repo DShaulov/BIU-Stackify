@@ -65,8 +65,8 @@ public class OrderedScannerSolver implements Solver {
             boolean segmentHasRoom = true;
             while (segmentHasRoom) {
                 Box currentBox = boxList.get(boxIndex);
-                // If box is manually placed, continue
-                if (currentBox.isManuallyPlaced()) {
+                // If box is manually placed or too large to fit, continue
+                if (currentBox.isManuallyPlaced() || currentBox.isTooLarge()) {
                     boxIndex += 1;
                     continue;
                 }
