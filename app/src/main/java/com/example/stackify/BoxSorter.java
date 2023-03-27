@@ -56,4 +56,15 @@ public class BoxSorter {
             }
         });
     }
+    public static void sortByBottomLeftAscending(ArrayList<Box> boxList) {
+        Collections.sort(boxList, new Comparator<Box>() {
+            @Override
+            public int compare(Box box1, Box box2) {
+                if (box2.getBottomLeft().getY() != box1.getBottomLeft().getY()) {
+                    return box1.getBottomLeft().getY() - box2.getBottomLeft().getY();
+                }
+                return box1.getBottomLeft().getX() - box2.getBottomLeft().getX();
+            }
+        });
+    }
 }
