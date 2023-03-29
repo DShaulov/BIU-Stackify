@@ -16,8 +16,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.opencsv.CSVReader;
 
 import java.io.InputStream;
@@ -30,12 +32,14 @@ public class MainActivity extends AppCompatActivity {
     private SolutionDao solutionDao;
     private Button uploadBtn;
     private Button prevSolsBtn;
+    private ImageButton threeDotBtn;
     private AppDB db;
     private ArrayList<Box> boxList;
-    int containerHeight;
-    int containerWidth;
-    int containerLength;
+    private int containerHeight;
+    private int containerWidth;
+    private int containerLength;
     private Dialog dialog;
+    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +56,18 @@ public class MainActivity extends AppCompatActivity {
 
         uploadBtn = findViewById(R.id.uploadBtn);
         prevSolsBtn = findViewById(R.id.prevSolsBtn);
+        threeDotBtn = findViewById(R.id.threeDotBtn);
+        auth = FirebaseAuth.getInstance();
 
         uploadBtn.setOnClickListener(view -> getContent.launch("*/*"));
         prevSolsBtn.setOnClickListener(view -> startPrevSolutionsActivity());
+        threeDotBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchOptionsDialog();
+            }
+        });
+
     }
 
     ActivityResultLauncher<String> getContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
@@ -158,5 +171,52 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         alertDialog.show();
+    }
+
+    private void launchOptionsDialog() {
+        AlertDialog.Builder dialogBuilder= new AlertDialog.Builder(this);
+        dialogBuilder.setView(R.layout.dialog_main_options);
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                uploadBtn.setVisibility(View.VISIBLE);
+                prevSolsBtn.setVisibility(View.VISIBLE);
+                boxList.clear();
+            }
+        });
+        uploadBtn.setVisibility(View.INVISIBLE);
+        prevSolsBtn.setVisibility(View.INVISIBLE);
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                Button logoutBtn = alertDialog.findViewById(R.id.logoutBtn);
+                logoutBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        logout();
+                    }
+                });
+            }
+        });
+        alertDialog.show();
+    }
+
+    public void logout() {
+        try {
+            auth.signOut();
+        } catch (Exception e) {
+            Toast.makeText(MainActivity.this, "An error has occurred.", Toast.LENGTH_SHORT);
+            return;
+        }
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        return;
     }
 }

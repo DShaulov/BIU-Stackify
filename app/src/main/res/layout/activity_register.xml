@@ -23,7 +23,6 @@
         android:id="@+id/registerSubmitBtn"
         android:layout_width="206dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="160dp"
         android:background="@drawable/rounded_rectangle"
         android:text="Sign Up"
         android:textColor="@color/appBlack"
@@ -32,14 +31,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerPasswordEditText"
+        app:layout_constraintTop_toBottomOf="@+id/registerConfirmPasswordEditText"
+        app:layout_constraintVertical_bias="0.66"
         app:layout_constraintWidth_percent="0.5" />
 
     <EditText
         android:id="@+id/registerEmailEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="64dp"
         android:backgroundTint="@color/appGreen"
         android:ems="10"
         android:hint="Email"
@@ -84,5 +84,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/registerPasswordEditText" />
+
+    <ProgressBar
+        android:id="@+id/registerProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="16dp"
+        android:background="@color/appBlack"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/appGreen"
+        android:indeterminateTintMode="src_atop"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerConfirmPasswordEditText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

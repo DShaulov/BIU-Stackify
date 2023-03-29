@@ -51,4 +51,16 @@
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintWidth_percent="0.5" />
 
+    <ImageButton
+        android:id="@+id/threeDotBtn"
+        android:layout_width="59dp"
+        android:layout_height="76dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/appBlack"
+        android:src="@drawable/ic_three_dots_small_foreground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:clickable="true"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

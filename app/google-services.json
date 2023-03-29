@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "31699235829",
+    "project_id": "biu-stackify",
+    "storage_bucket": "biu-stackify.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31699235829:android:7b31b61aa104b4e036e6bc",
+        "android_client_info": {
+          "package_name": "com.example.stackify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31699235829-hj5v04r2tj24b8kpav38pkogcs18to70.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3lJLUR6wAupWwM3dWyoSiMFYIonBEb7s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "31699235829-hj5v04r2tj24b8kpav38pkogcs18to70.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
