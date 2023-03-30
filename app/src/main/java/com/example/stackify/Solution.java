@@ -25,7 +25,7 @@ public class Solution implements Serializable {
     private int numOfBoxesTotal;
     private int numOfBoxesInSolution;
     private boolean isOrdered;
-    private LocalDate date;
+    private String date;
 
 
 
@@ -38,7 +38,6 @@ public class Solution implements Serializable {
         this.segmentList = new ArrayList<>();
         this.numOfBoxesTotal = numOfBoxesTotal;
         this.numOfBoxesInSolution = 0;
-        this.date = LocalDate.now();
     }
 
     public void addSegment(Segment segment) {
@@ -164,11 +163,11 @@ public class Solution implements Serializable {
         isOrdered = ordered;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

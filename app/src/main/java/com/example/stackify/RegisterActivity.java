@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,11 +43,19 @@ public class RegisterActivity extends AppCompatActivity {
     private Toast emailInvalidToast;
     private ProgressBar registerProgressBar;
     private DatabaseReference databaseReference;
+    private SolutionDao solutionDao;
+    private AppDB db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        db = Room.databaseBuilder(getApplicationContext(), AppDB.class, "StackifyDB")
+                .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
+                .build();
+        solutionDao = db.solutionDao();
 
         userEmail = "";
         userPassword = "";
@@ -109,6 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Log.d(TAG, "createUserWithEmail:success");
                     FirebaseUser user = auth.getCurrentUser();
                     saveUser(user.getUid());
+                    solutionDao.deleteAll();
                     resetUI();
                     startMainActivity();
                 } else {

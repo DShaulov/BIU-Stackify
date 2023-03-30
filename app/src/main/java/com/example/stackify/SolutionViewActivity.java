@@ -32,6 +32,7 @@ import com.google.gson.Gson;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -203,7 +204,10 @@ public class SolutionViewActivity extends AppCompatActivity {
                             Toast.makeText(SolutionViewActivity.this, "Name Can Contain Only Letters.", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        solution.setDate(LocalDate.now());
+                        LocalDate date = LocalDate.now();
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                        String formattedDate = date.format(formatter);
+                        solution.setDate(formattedDate);
                         solution.setSolutionName(solutionName);
                         solutionDao.insert(solution);
                         FirebaseUser user = auth.getCurrentUser();

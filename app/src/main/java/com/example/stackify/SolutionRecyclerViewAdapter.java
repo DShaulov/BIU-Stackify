@@ -34,7 +34,7 @@ public class SolutionRecyclerViewAdapter extends RecyclerView.Adapter<SolutionRe
     public void onBindViewHolder(@NonNull SolutionRecyclerViewAdapter.MyViewHolder holder, int position) {
         holder.solNameTextView.setText(solutionList.get(position).getSolutionName());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        holder.solDateTextView.setText(solutionList.get(position).getDate().format(formatter));
+        holder.solDateTextView.setText(solutionList.get(position).getDate());
     }
 
     @Override

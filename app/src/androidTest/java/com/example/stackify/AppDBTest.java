@@ -21,6 +21,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,9 +74,6 @@ public class AppDBTest {
         assertEquals("Test Solution", readSolution.getSolutionName());
         assertEquals(2, solution.getSegmentList().size());
 
-        LocalDate readDate = readSolution.getDate();
-        assertEquals(16, readDate.getDayOfMonth());
-
         List<Box> readBoxList = readSolution.getBoxList();
         assertEquals(400, readBoxList.get(1).getLength());
         assertEquals(800, readBoxList.get(2).getLength());
@@ -115,7 +113,10 @@ public class AppDBTest {
 
         solution.setBoxList(boxList);
 
-        solution.setDate(LocalDate.now());
+        LocalDate date = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedDate = date.format(formatter);
+        solution.setDate(formattedDate);
 
         Gson gson = new Gson();
         String json = gson.toJson(solution);
