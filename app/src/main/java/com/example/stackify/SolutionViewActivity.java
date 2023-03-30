@@ -42,10 +42,12 @@ public class SolutionViewActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     private AppDB db;
     private SolutionViewDrawHelper drawHelper;
+    private CorrectiveActionsHelper correctiveActionsHelper;
     private SolutionDao solutionDao;
     private Button nextSegmentBtn;
     private Button prevSegmentBtn;
     private Button optionsBtn;
+    private Button correctionsBtn;
     private TextView segmentNumTextView;
     private Solution solution;
     private int segmentNum;
@@ -73,6 +75,7 @@ public class SolutionViewActivity extends AppCompatActivity {
         nextSegmentBtn = findViewById(R.id.nextSegmentBtn);
         prevSegmentBtn = findViewById(R.id.prevSegmentBtn);
         optionsBtn = findViewById(R.id.optionsBtn);
+        correctionsBtn = findViewById(R.id.correctionBtn);
         segmentNumTextView = findViewById(R.id.segmentNumTextView);
         auth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -84,6 +87,8 @@ public class SolutionViewActivity extends AppCompatActivity {
         bitmapHeight = solution.getContainerHeight();
         bitmapWidth = solution.getContainerWidth();
         segmentNum = 0;
+
+        correctiveActionsHelper = new CorrectiveActionsHelper(this, solution);
 
         solImageView = findViewById(R.id.solImageView);
         offset = 50;
@@ -107,6 +112,12 @@ public class SolutionViewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 launchOptionsDialog();
+            }
+        });
+        correctionsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchCorrectionsDialog();
             }
         });
 
@@ -155,7 +166,6 @@ public class SolutionViewActivity extends AppCompatActivity {
             public void onShow(DialogInterface dialogInterface) {
                 Button saveSolutionBtn = alertDialog.findViewById(R.id.saveSolutionBtn);
                 Button solutionInfoBtn = alertDialog.findViewById(R.id.solutionInfoBtn);
-                Button rearrangeBtn = alertDialog.findViewById(R.id.rearrangeManuallyBtn);
 
                 saveSolutionBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -169,12 +179,28 @@ public class SolutionViewActivity extends AppCompatActivity {
                         showSolutionInfo();
                     }
                 });
-                rearrangeBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        rearrangeSolution();
-                    }
-                });
+            }
+        });
+        alertDialog.show();
+    }
+
+    private void launchCorrectionsDialog() {
+        AlertDialog.Builder dialogBuilder= new AlertDialog.Builder(this);
+        dialogBuilder.setView(R.layout.dialog_solution_corrections);
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                Button moveBoxBtn = alertDialog.findViewById(R.id.moveBoxBt);
+                Button freeBoxBtn = alertDialog.findViewById(R.id.freeBoxBtn);
+                Button addBoxBtn = alertDialog.findViewById(R.id.addBoxBtn);
+                Button removeBoxBtn = alertDialog.findViewById(R.id.removeBoxBtn);
+
+                moveBoxBtn.setOnClickListener(view -> {CorrectiveActionsHelper.launchMoveBoxDialog();});
+                freeBoxBtn.setOnClickListener(view -> {CorrectiveActionsHelper.launchFreeBoxDialog();});
+                addBoxBtn.setOnClickListener(view -> {CorrectiveActionsHelper.launchAddBoxDialog();});
+                removeBoxBtn.setOnClickListener(view -> {CorrectiveActionsHelper.launchRemoveBoxDialog();});
             }
         });
         alertDialog.show();
@@ -267,160 +293,6 @@ public class SolutionViewActivity extends AppCompatActivity {
             }
         });
         alertDialog.show();
-    }
-
-    public void rearrangeSolution() {
-        AlertDialog.Builder dialogBuilder= new AlertDialog.Builder(this);
-        dialogBuilder.setView(R.layout.dialog_solution_rearrange_selection);
-        AlertDialog alertDialog = dialogBuilder.create();
-        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialogInterface) {
-                EditText enterBoxNumEditText = alertDialog.findViewById(R.id.enterBoxNumEditText);
-                EditText enterSegmentNumEditText = alertDialog.findViewById(R.id.enterSegmentNumEditText);
-                EditText enterHorizontalPosEditText = alertDialog.findViewById(R.id.enterHorizontalPosEditText);
-                EditText enterVerticalPosEditText = alertDialog.findViewById(R.id.enterVerticalPosEditText);
-                Button rearrangeOkBtn = alertDialog.findViewById(R.id.rearrangeOkBtn);
-
-                enterSegmentNumEditText.setHint("*Segment Number (1-" + solution.getNumOfSegments() + ")");
-                enterHorizontalPosEditText.setHint("*X Position (0-" + solution.getContainerWidth() + ")");
-                enterVerticalPosEditText.setHint("*Y Position (0-" + solution.getContainerHeight() + ")");
-
-                rearrangeOkBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        String boxNumString = enterBoxNumEditText.getText().toString();
-                        String segmentNumString = enterSegmentNumEditText.getText().toString();
-                        String xPositionString = enterHorizontalPosEditText.getText().toString();
-                        String yPositionString = enterVerticalPosEditText.getText().toString();
-                        if (boxNumString.isEmpty() || segmentNumString.isEmpty() || xPositionString.isEmpty() || yPositionString.isEmpty()) {
-                            Toast.makeText(SolutionViewActivity.this,"Fields cannot be empty", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        Integer boxNum = Integer.parseInt(enterBoxNumEditText.getText().toString());
-                        Integer segmentNum = Integer.parseInt(enterSegmentNumEditText.getText().toString());
-                        Integer xPosition = Integer.parseInt(enterHorizontalPosEditText.getText().toString());
-                        Integer yPosition = Integer.parseInt(enterVerticalPosEditText.getText().toString());
-
-                        if (solution.getBoxList().size() < boxNum) {
-                            Toast.makeText(SolutionViewActivity.this,"Box number " + boxNum + " does not exist", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        if (solution.getSegmentList().size() < segmentNum) {
-                            Toast.makeText(SolutionViewActivity.this,"Segment Number must be (1-" + solution.getNumOfSegments() + ")", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        if (solution.getContainerWidth() < xPosition) {
-                            Toast.makeText(SolutionViewActivity.this,"X Position must be (0-" + solution.getContainerWidth() + ")", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        if (solution.getContainerHeight() < yPosition) {
-                            Toast.makeText(SolutionViewActivity.this,"Y Position must be (0-" + solution.getContainerHeight() + ")", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        Box manuallyPlacedBox = null;
-                        for (Box box : solution.getBoxList()) {
-                            if (box.getUnpackOrder() == boxNum) {
-                                manuallyPlacedBox = box;
-                                break;
-                            }
-                        }
-                        if (boxIsOutOfBounds(manuallyPlacedBox, xPosition, yPosition)) {
-                            Toast.makeText(SolutionViewActivity.this,"Box is out of bounds", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        if (spaceIsAlreadyTaken(manuallyPlacedBox, segmentNum, xPosition, yPosition)) {
-                            Toast.makeText(SolutionViewActivity.this,"Space is already taken by another box", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        loadNewSolution(manuallyPlacedBox, segmentNum, xPosition, yPosition);
-                    }
-                });
-            }
-        });
-        alertDialog.show();
-    }
-
-    /**
-     * Checks if manually placed box is out of segment bounds.
-     * @param box
-     * @param xPosition
-     * @param yPosition
-     * @return
-     */
-    public boolean boxIsOutOfBounds(Box box, int xPosition, int yPosition) {
-        boolean outOfBoundsOnX = solution.getContainerWidth() < xPosition + box.getWidth();
-        boolean outOfBoundsOnY = solution.getContainerHeight() < yPosition + box.getHeight();
-        if (outOfBoundsOnX || outOfBoundsOnY) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Checks if manually placed box occupies a taken space.
-     */
-    public boolean spaceIsAlreadyTaken(Box manuallyPlacedBox, int segmentNum, int xPosition, int yPosition) {
-        Segment chosenSegment = solution.getSegmentList().get(segmentNum - 1);
-        boolean isTaken = false;
-        for (Box box : chosenSegment.getBoxList()) {
-            if (box.isManuallyPlaced()) {
-                if (boxesOverlap(manuallyPlacedBox, box, xPosition, yPosition)) {
-                    isTaken = true;
-                    break;
-                }
-            }
-        }
-        return isTaken;
-    }
-
-    /**
-     * Checks if two placed boxes overlap
-     * @param manuallyPlacedBox
-     * @param segmentBox
-     * @param xPosition
-     * @param yPosition
-     * @return
-     */
-    public boolean boxesOverlap(Box manuallyPlacedBox, Box segmentBox, int xPosition, int yPosition) {
-        Coordinate bottomLeftBox1 = new Coordinate(xPosition, yPosition);
-        Coordinate topRightBox1 = new Coordinate(xPosition + manuallyPlacedBox.getWidth(), yPosition + manuallyPlacedBox.getHeight());
-        Coordinate bottomLeftBox2 = segmentBox.getBottomLeft();
-
-        Coordinate topRightBox2 = new Coordinate(bottomLeftBox2.getX() + segmentBox.getWidth(), bottomLeftBox2.getY() + segmentBox.getHeight());
-        // If one box is to the side of another, they do not overlap
-        if (topRightBox1.getX() < bottomLeftBox2.getX() || topRightBox2.getX() < bottomLeftBox1.getX()) {
-            return false;
-        }
-        // If one box is above another, they do not overlap
-        if (topRightBox1.getY() < bottomLeftBox2.getY() || topRightBox2.getY() < bottomLeftBox1.getY()) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Loads a new solution after manual rearrangement
-     * @param manuallyPlacedBox
-     * @param segmentNum
-     * @param xPosition
-     * @param yPosition
-     */
-    public void loadNewSolution(Box manuallyPlacedBox, int segmentNum, int xPosition, int yPosition) {
-        solution.markAsUnpacked();
-
-        if (manuallyPlacedBox != null) {
-            manuallyPlacedBox.setManuallyPlaced(true);
-            manuallyPlacedBox.setBottomLeft(new Coordinate(xPosition, yPosition));
-            manuallyPlacedBox.setSegmentNum(segmentNum);
-        }
-        Intent intent = new Intent(this, SolutionLoadingActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("solution", (Serializable) solution);
-        intent.putExtra("Bundle", bundle);
-        intent.putExtra("isRearrangedSolution", true);
-        startActivity(intent);
     }
 
     public void updateSegmentNumTextView() {

@@ -7,9 +7,8 @@
     android:layout_gravity="center"
     android:background="@drawable/dialog_bg">
 
-
     <EditText
-        android:id="@+id/enterNameEditText"
+        android:id="@+id/removeBoxNumEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -17,29 +16,33 @@
         android:layout_marginEnd="16dp"
         android:backgroundTint="@color/appGreen"
         android:ems="10"
-        android:hint=" Enter Name"
-        android:inputType="text"
+        android:hint=" Box Number"
+        android:inputType="numberSigned"
         android:textAlignment="center"
-
         android:textColor="@color/appGreen"
         android:textColorHint="@color/appGreen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/enterNameSaveBtn"
+        android:id="@+id/removeBoxOkBtn"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_corner"
         android:backgroundTint="@color/appGreen"
-        android:text="Save"
+        android:text="OK"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterNameEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/removeBoxNumEditText" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

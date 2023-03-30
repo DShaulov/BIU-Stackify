@@ -180,4 +180,36 @@ public class Solution implements Serializable {
         }
         setNumOfBoxesInSolution(count);
     }
+
+    /**
+     * Checks if a box with the specified unpackOrder exists.
+     * @return
+     */
+    public boolean boxExists(int boxNum) {
+        for (Box box : boxList) {
+            if (box.getUnpackOrder() == boxNum) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns a box with the specified unpackOrder
+     */
+    public Box getBoxByUnpackOrder(int boxNum) {
+        for (Box box : boxList) {
+            if (box.getUnpackOrder() == boxNum) {
+                return box;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Removes a box with the specified unpackOrder
+     */
+    public void removeBoxByUnpackOrder(int boxNum) {
+        boxList.removeIf(box -> box.getUnpackOrder() == boxNum);
+    }
 }
