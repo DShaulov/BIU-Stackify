@@ -24,6 +24,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -31,6 +37,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class SolutionViewActivity extends AppCompatActivity {
+    FirebaseAuth auth;
+    DatabaseReference databaseReference;
     private AppDB db;
     private SolutionViewDrawHelper drawHelper;
     private SolutionDao solutionDao;
@@ -65,6 +73,8 @@ public class SolutionViewActivity extends AppCompatActivity {
         prevSegmentBtn = findViewById(R.id.prevSegmentBtn);
         optionsBtn = findViewById(R.id.optionsBtn);
         segmentNumTextView = findViewById(R.id.segmentNumTextView);
+        auth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         Bundle bundle = getIntent().getBundleExtra("Bundle");
         solution = (Solution) bundle.getSerializable("solution");
@@ -186,18 +196,40 @@ public class SolutionViewActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         String solutionName = enterNameEditText.getText().toString();
                         if (solutionName.isEmpty()) {
-                            enterNameEditText.setHint("*Cannot be empty");
+                            Toast.makeText(SolutionViewActivity.this, "Name Cannot Be Empty.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (!stringIsAlphabetical(solutionName)) {
+                            Toast.makeText(SolutionViewActivity.this, "Name Can Contain Only Letters.", Toast.LENGTH_SHORT).show();
                             return;
                         }
                         solution.setDate(LocalDate.now());
                         solution.setSolutionName(solutionName);
                         solutionDao.insert(solution);
+                        FirebaseUser user = auth.getCurrentUser();
+                        saveSolutionToCloud(user.getUid(), solution);
                         alertDialog.cancel();
                     }
                 });
             }
         });
         alertDialog.show();
+    }
+
+    public boolean stringIsAlphabetical(String name) {
+        char[] chars = name.toCharArray();
+        for (char c : chars) {
+            if(!Character.isLetter(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void saveSolutionToCloud(String userId, Solution solution) {
+        Gson gson = new Gson();
+        String solAsJson = gson.toJson(solution);
+        databaseReference.child("users").child(userId).child("solutions").child(solution.getSolutionName()).setValue(solAsJson);
     }
 
     // TODO

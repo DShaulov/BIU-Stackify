@@ -21,4 +21,6 @@ public interface SolutionDao {
     void update(Solution solution);
     @Delete
     void delete(Solution solution);
+    @Query("DELETE FROM Solution")
+    void deleteAll();
 }

@@ -115,8 +115,12 @@ public class AppDBTest {
 
         solution.setBoxList(boxList);
 
+        solution.setDate(LocalDate.now());
+
         Gson gson = new Gson();
         String json = gson.toJson(solution);
         System.out.println(json);
+        Solution solFromJson = gson.fromJson(json, Solution.class);
+        System.out.println(solFromJson);
     }
 }
