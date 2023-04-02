@@ -104,13 +104,13 @@ public class MainActivity extends AppCompatActivity {
                 }
                 catch (Exception e) {
                     System.out.println(e);
-                    Toast.makeText(MainActivity.this,"File poorly formatted", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this,"File poorly formatted", Toast.LENGTH_SHORT).show();
                     // Delete all previous boxes
                     boxList.clear();
                 }
             }
             catch (Exception e) {
-                Toast.makeText(MainActivity.this,"File type not supported", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this,"File type not supported", Toast.LENGTH_SHORT).show();
             }
         }
     });
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
     private void startPrevSolutionsActivity() {
         List<Solution> prevSolutions = solutionDao.index();
         if (prevSolutions.isEmpty()) {
-            Toast.makeText(MainActivity.this,"No previous solutions found", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this,"No previous solutions found", Toast.LENGTH_SHORT).show();
             return;
         }
         Intent intent = new Intent(this, PreviousSolutionsRecyclerView.class);

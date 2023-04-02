@@ -133,7 +133,7 @@ public class SolutionViewActivity extends AppCompatActivity {
         // Draw the 3d box first to avoid painting over
         BoxSorter.sortByBottomLeftAscending(segment.getBoxList());
         for (Box box : segment.getBoxList()) {
-            drawHelper.drawBox3D(box, containerHeight, offset);
+            drawHelper.drawBox3D(box, containerHeight, offset, segment.getLength());
         }
         for (Box box : segment.getBoxList()) {
             drawHelper.drawBox(box, containerHeight, offset);
@@ -249,7 +249,7 @@ public class SolutionViewActivity extends AppCompatActivity {
     public boolean stringIsAlphabetical(String name) {
         char[] chars = name.toCharArray();
         for (char c : chars) {
-            if(!Character.isLetter(c)) {
+            if(!Character.isLetter(c) && !Character.isSpaceChar(c)) {
                 return false;
             }
         }

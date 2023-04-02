@@ -81,12 +81,15 @@ public class SolutionViewDrawHelper {
      * @param box
      * @param offset
      */
-    public void drawBox3D(Box box, int containerHeight, int offset) {
+    public void drawBox3D(Box box, int containerHeight, int offset, int segmentLength) {
         // Since (0,0) is the top-left corner of the device, y-axis calculations need to take that into account
         int top = containerHeight - box.getBottomLeft().getY() + offset;
         int bottom = top - box.getHeight();
         int left = box.getBottomLeft().getX();
         int right = left + box.getWidth();
+
+        // Make the depth proportional to the length of the box
+        offset = (int) ((float) offset * ((float)box.getLength() / (float) segmentLength));
 
         // Draw the top parallelogram
         Path topRect = new Path();
