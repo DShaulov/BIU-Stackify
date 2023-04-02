@@ -8,30 +8,16 @@
     tools:context=".SolutionViewActivity">
 
     <Button
-        android:id="@+id/nextSegmentBtn"
-        android:layout_width="110dp"
+        android:id="@+id/viewSwitchBtn"
+        android:layout_width="206dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="88dp"
-        android:layout_marginBottom="156dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_rectangle"
-        android:text="Next"
+        android:text="Segment View"
         android:textColor="@color/appBlack"
         app:backgroundTint="@color/appGreen"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/correctionBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.5" />
-
-    <Button
-        android:id="@+id/prevSegmentBtn"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="88dp"
-        android:layout_marginBottom="156dp"
-        android:background="@drawable/rounded_rectangle"
-        android:text="Previous"
-        android:textColor="@color/appBlack"
-        app:backgroundTint="@color/appGreen"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintWidth_percent="0.5" />
 

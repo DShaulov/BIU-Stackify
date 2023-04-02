@@ -8,7 +8,7 @@ import android.graphics.Path;
 /**
  * Handles functions relating to drawing on the canvas.
  */
-public class SolutionViewDrawHelper {
+public class DrawHelper {
     private Canvas canvas;
     private Paint boxPaint;
     private Paint pathPaint;
@@ -22,7 +22,7 @@ public class SolutionViewDrawHelper {
     private int textOffsetRight;
 
 
-    public SolutionViewDrawHelper(Canvas canvas) {
+    public DrawHelper(Canvas canvas) {
         this.canvas = canvas;
         this.cardboardLight = Color.rgb(154, 113, 65);
         this.cardboardDark = Color.rgb(126, 92, 53);
@@ -81,7 +81,7 @@ public class SolutionViewDrawHelper {
      * @param box
      * @param offset
      */
-    public void drawBox3D(Box box, int containerHeight, int offset, int segmentLength) {
+    public void drawBoxDepth(Box box, int containerHeight, int offset, int segmentLength) {
         // Since (0,0) is the top-left corner of the device, y-axis calculations need to take that into account
         int top = containerHeight - box.getBottomLeft().getY() + offset;
         int bottom = top - box.getHeight();
@@ -140,6 +140,5 @@ public class SolutionViewDrawHelper {
         rightEdges.moveTo(right, bottom);
 
         canvas.drawPath(rightEdges, framePaint);
-
     }
 }

@@ -1,6 +1,7 @@
 package com.example.stackify;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class OrderedScannerSolver implements Solver {
@@ -106,6 +107,7 @@ public class OrderedScannerSolver implements Solver {
             }
         }
         solution.markAsPacked();
+        Collections.reverse(solution.getSegmentList());
     }
 
     @Override

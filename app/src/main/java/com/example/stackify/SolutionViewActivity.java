@@ -1,6 +1,7 @@
 package com.example.stackify;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MotionEventCompat;
 import androidx.room.Room;
 
 import android.app.AlertDialog;
@@ -11,11 +12,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
-import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,22 +30,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
 
 public class SolutionViewActivity extends AppCompatActivity {
     FirebaseAuth auth;
     DatabaseReference databaseReference;
     private AppDB db;
-    private SolutionViewDrawHelper drawHelper;
+    private Button viewSwitchBtn;
+    private DrawHelper drawHelper;
     private CorrectiveActionsHelper correctiveActionsHelper;
     private SolutionDao solutionDao;
-    private Button nextSegmentBtn;
-    private Button prevSegmentBtn;
     private Button optionsBtn;
     private Button correctionsBtn;
     private TextView segmentNumTextView;
@@ -59,7 +54,13 @@ public class SolutionViewActivity extends AppCompatActivity {
     private Paint paint;
     private Bitmap bitmap;
     private Canvas canvas;
-    int offset;
+    private int offset;
+    private int offset3D;
+    private int minDimValue;
+    private float x1, x2;
+    static final int MIN_DISTANCE = 150;
+
+    private boolean isInSegmentView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +73,10 @@ public class SolutionViewActivity extends AppCompatActivity {
                 .build();
         solutionDao = db.solutionDao();
 
-        nextSegmentBtn = findViewById(R.id.nextSegmentBtn);
-        prevSegmentBtn = findViewById(R.id.prevSegmentBtn);
+        isInSegmentView = false;
         optionsBtn = findViewById(R.id.optionsBtn);
         correctionsBtn = findViewById(R.id.correctionBtn);
+        viewSwitchBtn = findViewById(R.id.viewSwitchBtn);
         segmentNumTextView = findViewById(R.id.segmentNumTextView);
         auth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -91,23 +92,15 @@ public class SolutionViewActivity extends AppCompatActivity {
         correctiveActionsHelper = new CorrectiveActionsHelper(this, solution);
 
         solImageView = findViewById(R.id.solImageView);
-        offset = 50;
+
+        // Set the offset to be a quarter of the segment length
+        minDimValue = Math.min(containerHeight, containerWidth);
+        offset = (int) (float) (solution.getSegmentList().get(1).getLength() * 0.25);
+        offset3D = (int) (float) (offset * 0.5);
+
         bitmap = Bitmap.createBitmap(bitmapWidth + offset, bitmapHeight + offset, Bitmap.Config.ARGB_8888);
         solImageView.setImageBitmap(bitmap);
         canvas = new Canvas(bitmap);
-
-        nextSegmentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showNextSegment();
-            }
-        });
-        prevSegmentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPrevSegment();
-            }
-        });
         optionsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,8 +113,20 @@ public class SolutionViewActivity extends AppCompatActivity {
                 launchCorrectionsDialog();
             }
         });
+        viewSwitchBtn.setOnClickListener(view -> {
+            if (!isInSegmentView) {
+                 isInSegmentView = true;
+                drawBoxes(segmentNum);
+                viewSwitchBtn.setText("3D View");
+            }
+            else {
+                isInSegmentView = false;
+                drawBoxes(segmentNum);
+                viewSwitchBtn.setText("Segment View");
+            }
+        });
 
-        drawHelper = new SolutionViewDrawHelper(canvas);
+        drawHelper = new DrawHelper(canvas);
         updateSegmentNumTextView();
         drawBoxes(segmentNum);
     }
@@ -129,15 +134,45 @@ public class SolutionViewActivity extends AppCompatActivity {
     public void drawBoxes(int segmentNum) {
         // Clear the bitmap of the canvas for a new drawing
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-        Segment segment = solution.getSegmentList().get(segmentNum);
         // Draw the 3d box first to avoid painting over
-        BoxSorter.sortByBottomLeftAscending(segment.getBoxList());
-        for (Box box : segment.getBoxList()) {
-            drawHelper.drawBox3D(box, containerHeight, offset, segment.getLength());
+        if (isInSegmentView) {
+            Segment segment = solution.getSegmentList().get(segmentNum);
+            BoxSorter.sortByBottomLeftAscending(segment.getBoxList());
+            for (Box box : segment.getBoxList()) {
+                drawHelper.drawBoxDepth(box, containerHeight, offset, segment.getLength());
+            }
+            for (Box box : segment.getBoxList()) {
+                drawHelper.drawBox(box, containerHeight, offset);
+            }
         }
-        for (Box box : segment.getBoxList()) {
-            drawHelper.drawBox(box, containerHeight, offset);
+        else {
+            int numOfSegments = solution.getNumOfSegments();
+            float shrinkFactor = 1 - (float) (offset3D * numOfSegments) / (float) (minDimValue);
+            for (int i = numOfSegments - 1; i >= segmentNum; i--) {
+                int bottomLeftOffset = offset3D * i;
+                Segment segment = solution.getSegmentList().get(i);
+                BoxSorter.sortByBottomLeftAscending(segment.getBoxList());
+                for (Box box : segment.getBoxList()) {
+                    int shrunkHeight = (int) ((float) box.getHeight() * shrinkFactor);
+                    int shrunkWidth = (int) ((float) box.getWidth() * shrinkFactor);
+                    int shrunkXPos = (int) ((float) box.getBottomLeft() .getX() * shrinkFactor) + bottomLeftOffset;
+                    int shrunkYPos = (int) ((float) box.getBottomLeft() .getY() * shrinkFactor) + bottomLeftOffset;
+                    Box shrunkBox = new Box(box.getUnpackOrder(), shrunkHeight, shrunkWidth, box.getLength());
+                    shrunkBox.setBottomLeft(new Coordinate(shrunkXPos, shrunkYPos));
+                    drawHelper.drawBoxDepth(shrunkBox, containerHeight, offset3D, segment.getLength());
+                }
+                for (Box box : segment.getBoxList()) {
+                    int shrunkHeight = (int) ((float) box.getHeight() * shrinkFactor);
+                    int shrunkWidth = (int) ((float) box.getWidth() * shrinkFactor);
+                    int shrunkXPos = (int) ((float) box.getBottomLeft() .getX() * shrinkFactor) + bottomLeftOffset;
+                    int shrunkYPos = (int) ((float) box.getBottomLeft() .getY() * shrinkFactor) + bottomLeftOffset;
+                    Box shrunkBox = new Box(box.getUnpackOrder(), shrunkHeight, shrunkWidth, box.getLength());
+                    shrunkBox.setBottomLeft(new Coordinate(shrunkXPos, shrunkYPos));
+                    drawHelper.drawBox(shrunkBox, containerHeight, offset3D);
+                }
+            }
         }
+
     }
 
     public void showNextSegment() {
@@ -299,6 +334,37 @@ public class SolutionViewActivity extends AppCompatActivity {
         String segmentNumString = String.format("Segment %d of %d", segmentNum + 1, solution.getNumOfSegments());
         segmentNumTextView.setText(segmentNumString);
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event)
+    {
+        switch(event.getAction())
+        {
+            case MotionEvent.ACTION_DOWN:
+                x1 = event.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                x2 = event.getX();
+                float deltaX = x2 - x1;
+                if (Math.abs(deltaX) > MIN_DISTANCE)
+                {
+                    // Case of left to right swipe
+                    if (x2 > x1) {
+                        showPrevSegment();
+                    }
+                    // Case of right to left swipe
+                    else {
+                        showNextSegment();
+                    }
+
+                }
+                else if (Math.abs(deltaX) < MIN_DISTANCE) {
+                }
+                break;
+        }
+        return super.onTouchEvent(event);
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
