@@ -14,6 +14,7 @@ public class DrawHelper {
     private Paint pathPaint;
     private Paint framePaint;
     private Paint textPaint;
+    private Paint shrunkTextPaint;
     private int cardboardLight;
     private int cardboardDark;
     private int appGreen;
@@ -56,6 +57,12 @@ public class DrawHelper {
         textPaint.setTextSize(textPaint.getTextSize() * 4);
         textPaint.setStrokeWidth(5);
         textPaint.setColor(Color.BLACK);
+
+        shrunkTextPaint = new Paint();
+        shrunkTextPaint.setAntiAlias(true);
+        shrunkTextPaint.setTextSize(textPaint.getTextSize() * 4);
+        shrunkTextPaint.setStrokeWidth(5);
+        shrunkTextPaint.setColor(Color.BLACK);
     }
 
     /**
@@ -74,6 +81,32 @@ public class DrawHelper {
         // Draw label for the box
         String formattedString = String.format("%d", box.getUnpackOrder());
         canvas.drawText(formattedString, right - textOffsetRight , bottom + textOffsetTop, textPaint);
+    }
+
+    /**
+     * Draws a rectangle with the specified dimensions, for 3D view
+     * @param box
+     * @param containerHeight
+     * @param offset
+     * @param shrinkFactor
+     */
+    public void drawBox3D(Box box, int containerHeight, int offset, float shrinkFactor) {
+        // Since (0,0) is the top-left corner of the device, y-axis calculations need to take that into account
+        int top = containerHeight - box.getBottomLeft().getY() + offset;
+        int bottom = top - box.getHeight();
+        int left = box.getBottomLeft().getX();
+        int right = left + box.getWidth();
+        canvas.drawRect(left, top, right, bottom, boxPaint);
+        // Draw a black frame around the rectangle
+        canvas.drawRect(left, top, right, bottom, framePaint);
+
+        // Draw label for the box
+        String formattedString = String.format("%d", box.getUnpackOrder());
+        int shrunkTextSize = (int) (textPaint.getTextSize() * shrinkFactor);
+        shrunkTextPaint.setTextSize(shrunkTextSize);
+        int shrunkTextOffsetRight = (int) (textOffsetRight * shrinkFactor);
+        int shrunkTextOffsetTop = (int) (textOffsetTop * shrinkFactor);
+        canvas.drawText(formattedString, right - shrunkTextOffsetRight , bottom + shrunkTextOffsetTop, shrunkTextPaint);
     }
 
     /**

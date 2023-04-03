@@ -116,6 +116,14 @@ public class MainActivity extends AppCompatActivity {
     });
 
     private void startSolutionLoadingActivity(boolean isOrdered) {
+        // DELETE LATER
+        BoxGenerator boxGenerator = new BoxGenerator();
+        boxList = boxGenerator.generateTypeABoxesMany();
+        List<Integer> dimList = boxGenerator.generateTypeAContainerMany();
+        containerHeight = dimList.get(0);
+        containerWidth = dimList.get(1);
+        containerLength = dimList.get(2);
+        //
         Intent intent = new Intent(this, SolutionLoadingActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("boxList", (Serializable) boxList);

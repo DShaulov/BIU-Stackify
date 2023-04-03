@@ -289,7 +289,9 @@ public class CorrectiveActionsHelper {
         if (manuallyPlacedBox != null) {
             manuallyPlacedBox.setManuallyPlaced(true);
             manuallyPlacedBox.setBottomLeft(new Coordinate(xPosition, yPosition));
-            manuallyPlacedBox.setSegmentNum(segmentNum);
+            // Because segments are displayed in reverse - the segment number is also reverse.
+            int actualSegmentNum = solution.getNumOfSegments() + 1 - segmentNum;
+            manuallyPlacedBox.setSegmentNum(actualSegmentNum);
         }
         Intent intent = new Intent(context, SolutionLoadingActivity.class);
         Bundle bundle = new Bundle();

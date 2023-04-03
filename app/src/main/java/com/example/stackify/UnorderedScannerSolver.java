@@ -65,6 +65,9 @@ public class UnorderedScannerSolver implements Solver{
 
             boolean segmentHasRoom = true;
             while (segmentHasRoom) {
+                if (boxIndex == boxList.size()) {
+                    break;
+                }
                 Box currentBox = boxList.get(boxIndex);
                 // If box is manually placed or is too large to fit, continue
                 if (currentBox.isManuallyPlaced() || currentBox.isTooLarge()) {
@@ -85,7 +88,10 @@ public class UnorderedScannerSolver implements Solver{
                                 segment.addBox(currentBox);
                                 SolverUtils.markSpaceAsOccupied(currentBox, spaceMatrix, xPosition, yPosition);
                                 boxIndex += 1;
-                                currentBox = boxList.get(boxIndex);
+                                // Edge case after placing last box
+                                if (boxIndex != boxList.size()) {
+                                    currentBox = boxList.get(boxIndex);
+                                }
                                 foundSpace = true;
                             }
                         }

@@ -168,7 +168,7 @@ public class SolutionViewActivity extends AppCompatActivity {
                     int shrunkYPos = (int) ((float) box.getBottomLeft() .getY() * shrinkFactor) + bottomLeftOffset;
                     Box shrunkBox = new Box(box.getUnpackOrder(), shrunkHeight, shrunkWidth, box.getLength());
                     shrunkBox.setBottomLeft(new Coordinate(shrunkXPos, shrunkYPos));
-                    drawHelper.drawBox(shrunkBox, containerHeight, offset3D);
+                    drawHelper.drawBox3D(shrunkBox, containerHeight, offset3D, shrinkFactor);
                 }
             }
         }
