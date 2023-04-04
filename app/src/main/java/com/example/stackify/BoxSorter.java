@@ -68,6 +68,9 @@ public class BoxSorter {
                 if (box2Y < box1Y && box1Y < box2Y + box2.getHeight()) {
                     return box1X - box2X;
                 }
+                if (box1Y < box2Y && box2Y < box1Y + box1.getHeight()) {
+                    return box1X - box2X;
+                }
                 if (box1Y != box2Y) {
                     return box1Y - box2Y;
                 }
