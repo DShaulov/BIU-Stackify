@@ -60,10 +60,18 @@ public class BoxSorter {
         Collections.sort(boxList, new Comparator<Box>() {
             @Override
             public int compare(Box box1, Box box2) {
-                if (box2.getBottomLeft().getY() != box1.getBottomLeft().getY()) {
-                    return box1.getBottomLeft().getY() - box2.getBottomLeft().getY();
+                int box1X = box1.getBottomLeft().getX();
+                int box2X = box2.getBottomLeft().getX();
+                int box1Y = box1.getBottomLeft().getY();
+                int box2Y = box2.getBottomLeft().getY();
+                // If two boxes have an overlap in the Y axis, draw the leftmost one first
+                if (box2Y < box1Y && box1Y < box2Y + box2.getHeight()) {
+                    return box1X - box2X;
                 }
-                return box1.getBottomLeft().getX() - box2.getBottomLeft().getX();
+                if (box1Y != box2Y) {
+                    return box1Y - box2Y;
+                }
+                return box1X - box2X;
             }
         });
     }
