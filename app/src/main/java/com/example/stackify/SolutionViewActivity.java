@@ -95,7 +95,13 @@ public class SolutionViewActivity extends AppCompatActivity {
 
         // Set the offset to be a quarter of the segment length
         minDimValue = Math.min(containerHeight, containerWidth);
-        offset = (int) (float) (solution.getSegmentList().get(1).getLength() * 0.25);
+        // Edge case where there are no segments in the solution
+        if (solution.getNumOfSegments() == 0) {
+            offset = 0;
+        }
+        else {
+            offset = (int) (float) (solution.getSegmentList().get(0).getLength() * 0.25);
+        }
         offset3D = (int) (float) (offset * 0.5);
 
         bitmap = Bitmap.createBitmap(bitmapWidth + offset, bitmapHeight + offset, Bitmap.Config.ARGB_8888);
@@ -134,6 +140,10 @@ public class SolutionViewActivity extends AppCompatActivity {
     public void drawBoxes(int segmentNum) {
         // Clear the bitmap of the canvas for a new drawing
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+        // Edge case where there are no segments
+        if (solution.getNumOfSegments() == 0) {
+            return;
+        }
         // Draw the 3d box first to avoid painting over
         if (isInSegmentView) {
             Segment segment = solution.getSegmentList().get(segmentNum);
@@ -324,14 +334,26 @@ public class SolutionViewActivity extends AppCompatActivity {
                         unpackedBoxesString = unpackedBoxesString + unpackedOrder + ", ";
                     }
                 }
-                unpackedBoxesNumberTextView.setText(unpackedBoxesString.substring(0, unpackedBoxesString.length() - 2));
+                if (unpackedBoxesString.equals("")) {
+                    unpackedBoxesNumberTextView.setText("None");
+                }
+                else {
+                    unpackedBoxesNumberTextView.setText(unpackedBoxesString.substring(0, unpackedBoxesString.length() - 2));
+                }
             }
         });
         alertDialog.show();
     }
 
     public void updateSegmentNumTextView() {
-        String segmentNumString = String.format("Segment %d of %d", segmentNum + 1, solution.getNumOfSegments());
+        // Edge case where there are no segments
+        String segmentNumString = "";
+        if (solution.getNumOfBoxesInSolution() == 0) {
+            segmentNumString = "No Boxes Packed";
+        }
+        else {
+            segmentNumString = String.format("Segment %d of %d", segmentNum + 1, solution.getNumOfSegments());
+        }
         segmentNumTextView.setText(segmentNumString);
     }
 
@@ -356,7 +378,6 @@ public class SolutionViewActivity extends AppCompatActivity {
                     else {
                         showNextSegment();
                     }
-
                 }
                 else if (Math.abs(deltaX) < MIN_DISTANCE) {
                 }

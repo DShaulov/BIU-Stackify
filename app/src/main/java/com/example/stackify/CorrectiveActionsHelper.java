@@ -302,7 +302,7 @@ public class CorrectiveActionsHelper {
     }
 
     /**
-     * Loads a new solution after freeing a box
+     * Loads a new solution after unpinning a box
      * @param freeBoxed
      */
     public static void loadSolutionWithFreedBox(Box freeBoxed) {

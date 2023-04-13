@@ -64,6 +64,7 @@ public class UnorderedScannerSolver implements Solver{
             Segment segment = segmentList.get(i);
 
             boolean segmentHasRoom = true;
+            boolean segmentAddedToList = false;
             while (segmentHasRoom) {
                 if (boxIndex == boxList.size()) {
                     break;
@@ -93,6 +94,12 @@ public class UnorderedScannerSolver implements Solver{
                                     currentBox = boxList.get(boxIndex);
                                 }
                                 foundSpace = true;
+                                // If segment is not already added, add it
+                                if (!segmentAddedToList) {
+                                    solution.addSegment(segment);
+                                    segmentAddedToList = true;
+                                }
+
                             }
                         }
                         // If box already placed, continue to next iteration
@@ -107,12 +114,13 @@ public class UnorderedScannerSolver implements Solver{
                 }
                 if (!foundSpace) {
                     segmentHasRoom = false;
-                    solution.addSegment(segment);
                     remainingContainerLength -= segmentLen;
                 }
             }
         }
         solution.markAsPacked();
+        solution.updateNumOfBoxesInSolution();
+        solution.setNumOfSegments(solution.getSegmentList().size());
         Collections.reverse(solution.getSegmentList());
     }
 

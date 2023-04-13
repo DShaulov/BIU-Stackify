@@ -11,44 +11,55 @@
         android:id="@+id/profile_image"
         android:layout_width="171dp"
         android:layout_height="145dp"
+        android:layout_marginTop="128dp"
         android:src="@mipmap/ic_launcher_3_darker"
         app:civ_border_color="#FF000000"
         app:civ_border_width="2dp"
-        app:layout_constraintBottom_toTopOf="@+id/uploadBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/uploadBtn"
+        android:id="@+id/blankBtn"
         android:layout_width="206dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="404dp"
+        android:layout_marginTop="128dp"
         android:background="@drawable/rounded_rectangle"
-        android:text="Get Solution"
+        android:text="Blank Solution"
         android:textColor="@color/appBlack"
         app:backgroundTint="@color/appGreen"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_image"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <Button
+        android:id="@+id/uploadBtn"
+        android:layout_width="206dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/rounded_rectangle"
+        android:text="Upload CSV"
+        android:textColor="@color/appBlack"
+        app:backgroundTint="@color/appGreen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/blankBtn"
         app:layout_constraintWidth_percent="0.5" />
 
     <Button
         android:id="@+id/prevSolsBtn"
         android:layout_width="206dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="64dp"
         android:background="@drawable/rounded_rectangle"
         android:text="Previous Solutions"
+
         android:textColor="@color/appBlack"
         app:backgroundTint="@color/appGreen"
-
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/uploadBtn"
-        app:layout_constraintVertical_bias="0.0"
         app:layout_constraintWidth_percent="0.5" />
 
     <ImageButton
@@ -58,9 +69,9 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@color/appBlack"
+        android:clickable="true"
         android:src="@drawable/ic_three_dots_small_foreground"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:clickable="true"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

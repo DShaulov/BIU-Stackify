@@ -51,6 +51,10 @@ public class SegmentLengthSelector {
      * @return segment length
      */
     public static DimNameValuePair minVarianceDim(ArrayList<Box> boxList) {
+        // Edge case where there are no boxes in solution
+        if (boxList.size() == 0) {
+            return new DimNameValuePair("Height", 200);
+        }
         ArrayList<Integer> heightList = new ArrayList<>();
         ArrayList<Integer> widthList = new ArrayList<>();
         ArrayList<Integer> lengthList = new ArrayList<>();
