@@ -10,34 +10,55 @@
 
     <TextView
         android:id="@+id/percentPackedTextView"
-        android:layout_width="206dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@drawable/rounded_corner"
-        android:padding="20px"
-        android:text="Percent Packed:"
+        android:background="@drawable/text_view_border"
+        android:ems="12"
+        android:padding="15px"
+        android:text="Boxes Packed:"
         android:textAlignment="center"
-        android:textColor="@color/appBlack"
-        app:backgroundTint="@color/appGreen"
+        android:textAllCaps="true"
+        android:textColor="@color/appGreen"
+        android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <TextView
-        android:id="@+id/unpackedBoxesTextView"
-        android:layout_width="206dp"
+        android:id="@+id/volumePackedTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/rounded_corner"
-        android:padding="20px"
-        android:text="Unpacked Boxes:"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/text_view_border"
+        android:ems="12"
+        android:padding="15px"
+        android:text="Volume Packed:"
         android:textAlignment="center"
-        android:textColor="@color/appBlack"
-        app:backgroundTint="@color/appGreen"
+        android:textAllCaps="true"
+        android:textColor="@color/appGreen"
+        android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout" />
+
+
+    <TextView
+        android:id="@+id/unpackedBoxesTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/text_view_border"
+        android:ems="12"
+        android:padding="15px"
+        android:text="Unpacked Boxes:"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/appGreen"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/volumeRelativeLayout" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -53,14 +74,51 @@
 
 
     <TextView
+        android:id="@+id/solTypeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:ems="12"
+        android:gravity="center"
+        android:text="SolType"
+        android:textAlignment="center"
+        android:textColor="@color/appGreen"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/solTypeTitleTextView" />
+
+    <TextView
+        android:id="@+id/solTypeTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/text_view_border"
+        android:ems="12"
+        android:gravity="center"
+        android:padding="15px"
+        android:text="Solution Type:"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/appGreen"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/unpackedBoxesNumberTextView" />
+
+    <TextView
         android:id="@+id/unpackedBoxesNumberTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:ems="12"
         android:gravity="center"
         android:text="Test"
         android:textAlignment="center"
         android:textColor="@color/appGreen"
+        android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,8 +150,40 @@
             android:id="@+id/progressBarPercentTextView"
             android:layout_width="206dp"
             android:layout_height="wrap_content"
-            android:text="Test"
             android:paddingLeft="177dp"
+            android:text="Test"
+            android:textColor="@color/appBlack" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/volumeRelativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/volumePackedTextView">
+
+        <ProgressBar
+            android:id="@+id/volumeProgressBar"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="206dp"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="50"
+            android:progressDrawable="@drawable/rounded_progress_bar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/volumeProgressBarPercentTextView"
+            android:layout_width="206dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="177dp"
+            android:text="Test"
             android:textColor="@color/appBlack" />
 
     </RelativeLayout>

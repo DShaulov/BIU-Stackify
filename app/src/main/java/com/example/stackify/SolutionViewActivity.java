@@ -43,6 +43,7 @@ public class SolutionViewActivity extends AppCompatActivity {
     private SolutionDao solutionDao;
     private Button optionsBtn;
     private Button correctionsBtn;
+    private Button addBoxEmptySolBtn;
     private TextView segmentNumTextView;
     private Solution solution;
     private int segmentNum;
@@ -76,6 +77,7 @@ public class SolutionViewActivity extends AppCompatActivity {
         isInSegmentView = false;
         optionsBtn = findViewById(R.id.optionsBtn);
         correctionsBtn = findViewById(R.id.correctionBtn);
+        addBoxEmptySolBtn = findViewById(R.id.addBoxEmptySolBtn);
         viewSwitchBtn = findViewById(R.id.viewSwitchBtn);
         segmentNumTextView = findViewById(R.id.segmentNumTextView);
         auth = FirebaseAuth.getInstance();
@@ -131,6 +133,19 @@ public class SolutionViewActivity extends AppCompatActivity {
                 viewSwitchBtn.setText("Segment View");
             }
         });
+
+        // If there are no boxes in the solution, disable the make corrections and 3D view button
+        if (solution.getNumOfBoxesInSolution() == 0) {
+            viewSwitchBtn.setVisibility(View.INVISIBLE);
+            viewSwitchBtn.setEnabled(false);
+            correctionsBtn.setVisibility(View.INVISIBLE);
+            correctionsBtn.setEnabled(false);
+            addBoxEmptySolBtn.setOnClickListener(view -> {CorrectiveActionsHelper.launchAddBoxDialog();});
+        }
+        else {
+            addBoxEmptySolBtn.setVisibility(View.INVISIBLE);
+            addBoxEmptySolBtn.setEnabled(false);
+        }
 
         drawHelper = new DrawHelper(canvas);
         updateSegmentNumTextView();
@@ -240,11 +255,13 @@ public class SolutionViewActivity extends AppCompatActivity {
                 Button moveBoxBtn = alertDialog.findViewById(R.id.moveBoxBt);
                 Button freeBoxBtn = alertDialog.findViewById(R.id.freeBoxBtn);
                 Button addBoxBtn = alertDialog.findViewById(R.id.addBoxBtn);
+                Button changeBoxBtn = alertDialog.findViewById(R.id.changeBoxBtn);
                 Button removeBoxBtn = alertDialog.findViewById(R.id.removeBoxBtn);
 
                 moveBoxBtn.setOnClickListener(view -> {CorrectiveActionsHelper.launchMoveBoxDialog();});
                 freeBoxBtn.setOnClickListener(view -> {CorrectiveActionsHelper.launchFreeBoxDialog();});
                 addBoxBtn.setOnClickListener(view -> {CorrectiveActionsHelper.launchAddBoxDialog();});
+                changeBoxBtn.setOnClickListener(view -> {CorrectiveActionsHelper.launchChangeBoxDialog();});
                 removeBoxBtn.setOnClickListener(view -> {CorrectiveActionsHelper.launchRemoveBoxDialog();});
             }
         });
@@ -318,15 +335,36 @@ public class SolutionViewActivity extends AppCompatActivity {
             public void onShow(DialogInterface dialogInterface) {
                 ProgressBar progressBar = alertDialog.findViewById(R.id.progressBar);
                 TextView progressBarPercentTextView = alertDialog.findViewById(R.id.progressBarPercentTextView);
+                ProgressBar volumeProgressBar = alertDialog.findViewById(R.id.volumeProgressBar);
+                TextView volumeProgressBarPercentTextView = alertDialog.findViewById(R.id.volumeProgressBarPercentTextView);
                 TextView unpackedBoxesNumberTextView = alertDialog.findViewById(R.id.unpackedBoxesNumberTextView);
+                TextView solTypeTextView = alertDialog.findViewById(R.id.solTypeTextView);
+
+                if (solution.isOrdered()) {
+                    solTypeTextView.setText("Ordered");
+                }
+                else {
+                    solTypeTextView.setText("Unordered");
+                }
 
                 Integer percentPacked = Math.round(solution.getCoverage());
+                Integer percentVolumePacked = Math.round(solution.getVolumePacked());
+
                 progressBarPercentTextView.setText(percentPacked.toString() + "%");
+                volumeProgressBarPercentTextView.setText(percentVolumePacked.toString() + "%");
+
                 long paddingLeftDp = Math.round(((float)percentPacked / 100.0) * 206) - 30;
+                long volumePaddingLeftDp = Math.round(((float)percentVolumePacked / 100.0) * 206) - 30;
+
                 float scale = getResources().getDisplayMetrics().density;
                 int paddingLeftPx = (int) (paddingLeftDp * scale + 0.5f);
+                int volumePaddingLeftPx = (int) (volumePaddingLeftDp * scale + 0.5f);
+
                 progressBarPercentTextView.setPadding(paddingLeftPx, 0, 0, 0);
+                volumeProgressBarPercentTextView.setPadding(volumePaddingLeftPx, 0, 0, 0);
                 progressBar.setProgress(percentPacked);
+                volumeProgressBar.setProgress(percentVolumePacked);
+
                 String unpackedBoxesString = "";
                 for (Box box : solution.getBoxList()) {
                     if (!box.isPacked()) {

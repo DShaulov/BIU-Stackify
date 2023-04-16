@@ -55,12 +55,26 @@
         app:layout_constraintWidth_percent="0.5" />
 
     <Button
-        android:id="@+id/removeBoxBtn"
+        android:id="@+id/changeBoxBtn"
         android:layout_width="206dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
+        android:background="@drawable/rounded_rectangle"
+        android:text="Change Box"
+        android:textColor="@color/appBlack"
+        app:backgroundTint="@color/appGreen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addBoxBtn"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <Button
+        android:id="@+id/removeBoxBtn"
+        android:layout_width="206dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/rounded_rectangle"
         android:text="Remove Box"
@@ -69,6 +83,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addBoxBtn"
+        app:layout_constraintTop_toBottomOf="@+id/changeBoxBtn"
         app:layout_constraintWidth_percent="0.5" />
 </androidx.constraintlayout.widget.ConstraintLayout>

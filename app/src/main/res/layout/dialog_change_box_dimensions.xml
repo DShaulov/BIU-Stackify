@@ -8,7 +8,7 @@
     android:background="@drawable/dialog_bg">
 
     <EditText
-        android:id="@+id/enterBoxNumEditText"
+        android:id="@+id/unpackOrderEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -16,7 +16,7 @@
         android:layout_marginEnd="16dp"
         android:backgroundTint="@color/appGreen"
         android:ems="10"
-        android:hint="Box Number"
+        android:hint="Unpack Order"
         android:inputType="numberSigned"
         android:textAlignment="center"
         android:textColor="@color/appGreen"
@@ -26,7 +26,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/enterSegmentNumEditText"
+        android:id="@+id/heightEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -34,18 +34,18 @@
         android:layout_marginEnd="16dp"
         android:backgroundTint="@color/appGreen"
         android:ems="10"
-        android:hint="Segment"
+        android:hint="Height"
         android:inputType="numberSigned"
         android:textAlignment="center"
         android:textColor="@color/appGreen"
         android:textColorHint="@color/appGreen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterBoxNumEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/unpackOrderEditText" />
 
 
     <EditText
-        android:id="@+id/enterHorizontalPosEditText"
+        android:id="@+id/widthEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -53,17 +53,17 @@
         android:layout_marginEnd="16dp"
         android:backgroundTint="@color/appGreen"
         android:ems="10"
-        android:hint="Horizontal Position"
+        android:hint=" Width"
         android:inputType="numberSigned"
         android:textAlignment="center"
         android:textColor="@color/appGreen"
         android:textColorHint="@color/appGreen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterSegmentNumEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/heightEditText" />
 
     <EditText
-        android:id="@+id/enterVerticalPosEditText"
+        android:id="@+id/lengthEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -71,15 +71,15 @@
         android:textColor="@color/appGreen"
         android:textColorHint="@color/appGreen"
         android:ems="10"
-        android:hint="Vertical Position"
+        android:hint="Length"
         android:inputType="numberSigned"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterHorizontalPosEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/widthEditText" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/rearrangeOkBtn"
+        android:id="@+id/changeBoxOkBtn"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginTop="16dp"
@@ -90,7 +90,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterVerticalPosEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/lengthEditText" />
 
 
 

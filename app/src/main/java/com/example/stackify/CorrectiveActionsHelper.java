@@ -26,6 +26,9 @@ public class CorrectiveActionsHelper {
         this.solution = solution;
     }
 
+    /**
+     * Launches a dialog asking the user which box to pin
+     */
     public static void launchMoveBoxDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         dialogBuilder.setView(R.layout.dialog_move_box);
@@ -99,6 +102,9 @@ public class CorrectiveActionsHelper {
         alertDialog.show();
     }
 
+    /**
+     * Launches a dialog asking the user to provide a box number to unpin
+     */
     public static void launchFreeBoxDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         dialogBuilder.setView(R.layout.dialog_free_box);
@@ -137,6 +143,9 @@ public class CorrectiveActionsHelper {
         alertDialog.show();
     }
 
+    /**
+     * Launches a dialog asking the user to input information for a new box
+     */
     public static void launchAddBoxDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         dialogBuilder.setView(R.layout.dialog_add_box);
@@ -182,6 +191,104 @@ public class CorrectiveActionsHelper {
         alertDialog.show();
     }
 
+    /**
+     * Launches a dialog asking the user to provide the number of the box to change
+     */
+    public static void launchChangeBoxDialog() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+        dialogBuilder.setView(R.layout.dialog_change_box);
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                EditText changeBoxNumEditText = alertDialog.findViewById(R.id.changeBoxNumEditText);
+                Button changeBoxOkBtn = alertDialog.findViewById(R.id.changeBoxOkBtn);
+
+                changeBoxOkBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String boxNumString = changeBoxNumEditText.getText().toString();
+                        if (boxNumString.isEmpty()) {
+                            Toast.makeText(context, "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        Integer boxNum = Integer.parseInt(changeBoxNumEditText.getText().toString());
+                        if (!solution.boxExists(boxNum)) {
+                            Toast.makeText(context, "Box number " + boxNum + " does not exist", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        Box boxToChange = solution.getBoxByUnpackOrder(boxNum);
+                        launchChangeBoxDimDialog(boxToChange);
+                    }
+                });
+            }
+        });
+        alertDialog.show();
+    }
+
+    /**
+     * Launches a dialog for changing box dimensions
+     */
+    public static void launchChangeBoxDimDialog(Box boxToChange) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+        dialogBuilder.setView(R.layout.dialog_change_box_dimensions);
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                EditText unpackOrderEditText = alertDialog.findViewById(R.id.unpackOrderEditText);
+                EditText heightEditText = alertDialog.findViewById(R.id.heightEditText);
+                EditText widthEditText = alertDialog.findViewById(R.id.widthEditText);
+                EditText lengthEditText = alertDialog.findViewById(R.id.lengthEditText);
+
+                unpackOrderEditText.setHint("Unpack Order (" + boxToChange.getUnpackOrder() + ")");
+                heightEditText.setHint("Height (" + boxToChange.getHeight() + ")");
+                widthEditText.setHint("Width (" + boxToChange.getWidth() + ")");
+                lengthEditText.setHint("Length (" + boxToChange.getLength() + ")");
+
+                Button changeBoxOkBtn = alertDialog.findViewById(R.id.changeBoxOkBtn);
+
+                changeBoxOkBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String boxNumString = unpackOrderEditText.getText().toString();
+                        String boxHeightString = heightEditText.getText().toString();
+                        String boxWidthString = widthEditText.getText().toString();
+                        String boxLengthString = lengthEditText.getText().toString();
+
+                        if (boxNumString.isEmpty() || boxHeightString.isEmpty() || boxWidthString.isEmpty() || boxLengthString.isEmpty()) {
+                            Toast.makeText(context, "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        Integer boxNum = Integer.parseInt(unpackOrderEditText.getText().toString());
+                        Integer boxHeight = Integer.parseInt(heightEditText.getText().toString());
+                        Integer boxWidth = Integer.parseInt(widthEditText.getText().toString());
+                        Integer boxLength = Integer.parseInt(lengthEditText.getText().toString());
+
+                        if (solution.boxExists(boxNum) && boxNum != boxToChange.getUnpackOrder()) {
+                            Toast.makeText(context, "Box with unpack order " + boxNum + "already exists", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        boxToChange.setUnpackOrder(boxNum);
+                        boxToChange.setHeight(boxHeight);
+                        boxToChange.setWidth(boxWidth);
+                        boxToChange.setLength(boxLength);
+                        reloadSolution();
+                    }
+                });
+            }
+        });
+        alertDialog.show();
+    }
+
+    /**
+     * Launches a dialog asking the user which box to remove
+     */
     public static void launchRemoveBoxDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         dialogBuilder.setView(R.layout.dialog_remove_box);
@@ -274,6 +381,22 @@ public class CorrectiveActionsHelper {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Reloads a solution after alterations to existing boxes/container/type
+     */
+    public static void reloadSolution() {
+        solution.markAsUnpacked();
+        Intent intent = new Intent(context, SolutionLoadingActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("boxList", (Serializable) solution.getBoxList());
+        intent.putExtra("Bundle", bundle);
+        intent.putExtra("isOrdered", solution.isOrdered());
+        intent.putExtra("containerHeight", solution.getContainerHeight());
+        intent.putExtra("containerWidth", solution.getContainerWidth());
+        intent.putExtra("containerLength", solution.getContainerLength());
+        context.startActivity(intent);
     }
 
     /**

@@ -37,6 +37,21 @@
         app:layout_constraintWidth_percent="0.5" />
 
     <Button
+        android:id="@+id/addBoxEmptySolBtn"
+        android:layout_width="206dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rounded_rectangle"
+        android:text="Add Box"
+        android:textColor="@color/appBlack"
+        app:backgroundTint="@color/appGreen"
+        app:layout_constraintBottom_toTopOf="@+id/optionsBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <Button
         android:id="@+id/optionsBtn"
         android:layout_width="206dp"
         android:layout_height="wrap_content"
@@ -50,6 +65,8 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintWidth_percent="0.5" />
+
+
 
     <ImageView
         android:id="@+id/solImageView"

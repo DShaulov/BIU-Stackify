@@ -73,12 +73,12 @@ public class SolutionLoadingActivity extends AppCompatActivity {
 
     public void calculateSolution() {
         if (isOrdered) {
-            Solver orderedScannerSolver = new OrderedScannerSolver(boxList, containerHeight, containerWidth, containerLength);
+            Solver orderedScannerSolver = new ScannerSolver(boxList, containerHeight, containerWidth, containerLength, true);
             orderedScannerSolver.solve();
             solution = orderedScannerSolver.getSolution();
         }
         else {
-            Solver unorderedScannerSolver = new UnorderedScannerSolver(boxList, containerHeight, containerWidth, containerLength);
+            Solver unorderedScannerSolver = new ScannerSolver(boxList, containerHeight, containerWidth, containerLength, false);
             unorderedScannerSolver.solve();
             solution = unorderedScannerSolver.getSolution();
         }
@@ -86,12 +86,12 @@ public class SolutionLoadingActivity extends AppCompatActivity {
 
     public void calculateRearrangedSolution() {
         if (solution.isOrdered()) {
-            Solver orderedScannerSolver = new OrderedScannerSolver(boxList, containerHeight, containerWidth, containerLength);
+            Solver orderedScannerSolver = new ScannerSolver(boxList, containerHeight, containerWidth, containerLength, true);
             orderedScannerSolver.solve();
             solution = orderedScannerSolver.getSolution();
         }
         else {
-            Solver unorderedScannerSolver = new UnorderedScannerSolver(boxList, containerHeight, containerWidth, containerLength);
+            Solver unorderedScannerSolver = new ScannerSolver(boxList, containerHeight, containerWidth, containerLength, false);
             unorderedScannerSolver.solve();
             solution = unorderedScannerSolver.getSolution();
         }

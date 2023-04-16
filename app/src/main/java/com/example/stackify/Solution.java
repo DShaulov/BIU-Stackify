@@ -40,6 +40,10 @@ public class Solution implements Serializable {
         this.numOfBoxesInSolution = 0;
     }
 
+    /**
+     * Adds a segment to the segment list
+     * @param segment
+     */
     public void addSegment(Segment segment) {
         segmentList.add(segment);
         numOfSegments += 1;
@@ -66,6 +70,47 @@ public class Solution implements Serializable {
         }
     }
 
+    public void updateNumOfBoxesInSolution() {
+        int count = 0;
+        for (Segment segment : segmentList) {
+            for (Box box : segment.getBoxList()) {
+                count += 1;
+            }
+        }
+        setNumOfBoxesInSolution(count);
+    }
+
+    /**
+     * Checks if a box with the specified unpackOrder exists.
+     * @return
+     */
+    public boolean boxExists(int boxNum) {
+        for (Box box : boxList) {
+            if (box.getUnpackOrder() == boxNum) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns a box with the specified unpackOrder
+     */
+    public Box getBoxByUnpackOrder(int boxNum) {
+        for (Box box : boxList) {
+            if (box.getUnpackOrder() == boxNum) {
+                return box;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Removes a box with the specified unpackOrder
+     */
+    public void removeBoxByUnpackOrder(int boxNum) {
+        boxList.removeIf(box -> box.getUnpackOrder() == boxNum);
+    }
 
     public List<Box> getBoxList() {
         return boxList;
@@ -80,6 +125,17 @@ public class Solution implements Serializable {
      */
     public float getCoverage() {
         return (((float)numOfBoxesInSolution / (float)numOfBoxesTotal) * 100);
+    }
+
+    public float getVolumePacked() {
+        int containerVolume = containerHeight * containerWidth * containerLength;
+        int boxesVolume = 0;
+        for (Segment segment : segmentList) {
+            for (Box box : segment.getBoxList()) {
+                boxesVolume = boxesVolume + (box.getHeight() * box.getWidth() * box.getLength());
+            }
+        }
+        return (((float) boxesVolume / (float) containerVolume) * 100);
     }
 
     @NonNull
@@ -169,47 +225,5 @@ public class Solution implements Serializable {
 
     public void setDate(String date) {
         this.date = date;
-    }
-
-    public void updateNumOfBoxesInSolution() {
-        int count = 0;
-        for (Segment segment : segmentList) {
-            for (Box box : segment.getBoxList()) {
-                count += 1;
-            }
-        }
-        setNumOfBoxesInSolution(count);
-    }
-
-    /**
-     * Checks if a box with the specified unpackOrder exists.
-     * @return
-     */
-    public boolean boxExists(int boxNum) {
-        for (Box box : boxList) {
-            if (box.getUnpackOrder() == boxNum) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Returns a box with the specified unpackOrder
-     */
-    public Box getBoxByUnpackOrder(int boxNum) {
-        for (Box box : boxList) {
-            if (box.getUnpackOrder() == boxNum) {
-                return box;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Removes a box with the specified unpackOrder
-     */
-    public void removeBoxByUnpackOrder(int boxNum) {
-        boxList.removeIf(box -> box.getUnpackOrder() == boxNum);
     }
 }

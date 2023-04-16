@@ -82,7 +82,6 @@
         android:ems="12"
         android:textAlignment="center"
         android:textColor="@color/appGreen"
-        android:background="@color/appBlack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

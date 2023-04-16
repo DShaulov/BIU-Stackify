@@ -23,9 +23,23 @@
         android:id="@+id/blankBtn"
         android:layout_width="206dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="64dp"
         android:background="@drawable/rounded_rectangle"
         android:text="Blank Solution"
+        android:textColor="@color/appBlack"
+        app:backgroundTint="@color/appGreen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/uploadBtn"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <Button
+        android:id="@+id/uploadBtn"
+        android:layout_width="206dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="128dp"
+        android:background="@drawable/rounded_rectangle"
+        android:text="Upload CSV"
         android:textColor="@color/appBlack"
         app:backgroundTint="@color/appGreen"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,32 +48,18 @@
         app:layout_constraintWidth_percent="0.5" />
 
     <Button
-        android:id="@+id/uploadBtn"
-        android:layout_width="206dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:background="@drawable/rounded_rectangle"
-        android:text="Upload CSV"
-        android:textColor="@color/appBlack"
-        app:backgroundTint="@color/appGreen"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/blankBtn"
-        app:layout_constraintWidth_percent="0.5" />
-
-    <Button
         android:id="@+id/prevSolsBtn"
         android:layout_width="206dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
         android:background="@drawable/rounded_rectangle"
-        android:text="Previous Solutions"
 
+        android:text="Previous Solutions"
         android:textColor="@color/appBlack"
         app:backgroundTint="@color/appGreen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/uploadBtn"
+        app:layout_constraintTop_toBottomOf="@+id/blankBtn"
         app:layout_constraintWidth_percent="0.5" />
 
     <ImageButton

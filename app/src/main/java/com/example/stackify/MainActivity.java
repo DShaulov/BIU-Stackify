@@ -8,6 +8,7 @@ import androidx.room.Room;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,6 +16,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -161,11 +163,13 @@ public class MainActivity extends AppCompatActivity {
             public void onCancel(DialogInterface dialogInterface) {
                 uploadBtn.setVisibility(View.VISIBLE);
                 prevSolsBtn.setVisibility(View.VISIBLE);
+                blankSolBtn.setVisibility(View.VISIBLE);
                 boxList.clear();
             }
         });
         uploadBtn.setVisibility(View.INVISIBLE);
         prevSolsBtn.setVisibility(View.INVISIBLE);
+        blankSolBtn.setVisibility(View.INVISIBLE);
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {
@@ -201,11 +205,13 @@ public class MainActivity extends AppCompatActivity {
             public void onCancel(DialogInterface dialogInterface) {
                 uploadBtn.setVisibility(View.VISIBLE);
                 prevSolsBtn.setVisibility(View.VISIBLE);
+                blankSolBtn.setVisibility(View.VISIBLE);
                 boxList.clear();
             }
         });
         uploadBtn.setVisibility(View.INVISIBLE);
         prevSolsBtn.setVisibility(View.INVISIBLE);
+        blankSolBtn.setVisibility(View.INVISIBLE);
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {
@@ -215,6 +221,11 @@ public class MainActivity extends AppCompatActivity {
                 EditText lengthEditText = alertDialog.findViewById(R.id.lengthEditText);
 
                 okBtn.setOnClickListener(view -> {
+                    // Hide the soft keyboard
+                    lengthEditText.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(lengthEditText.getWindowToken(), 0);
+
                     String heightString = heightEditText.getText().toString();
                     String widthString = heightEditText.getText().toString();
                     String lengthString = heightEditText.getText().toString();
@@ -235,6 +246,7 @@ public class MainActivity extends AppCompatActivity {
                     containerWidth = width;
                     containerLength = length;
                     boxList = new ArrayList<>();
+                    lengthEditText.clearFocus();
                     launchOrdPickDialog();
                 });
             }
@@ -254,11 +266,13 @@ public class MainActivity extends AppCompatActivity {
             public void onCancel(DialogInterface dialogInterface) {
                 uploadBtn.setVisibility(View.VISIBLE);
                 prevSolsBtn.setVisibility(View.VISIBLE);
+                blankSolBtn.setVisibility(View.VISIBLE);
                 boxList.clear();
             }
         });
         uploadBtn.setVisibility(View.INVISIBLE);
         prevSolsBtn.setVisibility(View.INVISIBLE);
+        blankSolBtn.setVisibility(View.INVISIBLE);
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {

@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class OrderedScannerSolver implements Solver {
+public class ScannerSolver implements Solver{
     private ArrayList<Box> boxList;
     private int containerHeight;
     private int containerWidth;
     private int containerLength;
     private int remainingContainerLength;
+    private boolean isOrdered;
     private int totalBoxes;
     private Solution solution;
 
-    public OrderedScannerSolver(ArrayList<Box> boxList, int containerHeight, int containerWidth, int containerLength){
+    public ScannerSolver(ArrayList<Box> boxList, int containerHeight, int containerWidth, int containerLength, boolean isOrdered){
         this.boxList = boxList;
         this.containerHeight = containerHeight;
         this.containerWidth = containerWidth;
@@ -21,7 +22,8 @@ public class OrderedScannerSolver implements Solver {
         this.remainingContainerLength = containerLength;
         this.totalBoxes = boxList.size();
         this.solution = new Solution(boxList, containerHeight, containerWidth, containerLength, boxList.size());
-        this.solution.setOrdered(true);
+        this.solution.setOrdered(isOrdered);
+        this.isOrdered = isOrdered;
     }
 
     @Override
@@ -55,8 +57,13 @@ public class OrderedScannerSolver implements Solver {
         // Remove boxes too large to fit
         SolverUtils.discardTooLarge(boxList, containerHeight, containerWidth);
 
-        // Sort all boxes by area - ascending
-        BoxSorter.sortByUnpackOrder(boxList);
+        // If ordered solution, sort boxes by unpack order, else by area ascending
+        if (isOrdered) {
+            BoxSorter.sortByUnpackOrder(boxList);
+        }
+        else {
+            BoxSorter.sortByAreaAscending(boxList);
+        }
         int boxIndex = 0;
 
         for (int i = 0; i < numOfSegments; i++) {
@@ -64,12 +71,13 @@ public class OrderedScannerSolver implements Solver {
             Segment segment = segmentList.get(i);
 
             boolean segmentHasRoom = true;
+            boolean segmentAddedToList = false;
             while (segmentHasRoom) {
                 if (boxIndex == boxList.size()) {
                     break;
                 }
                 Box currentBox = boxList.get(boxIndex);
-                // If box is manually placed or too large to fit, continue
+                // If box is manually placed or is too large to fit, continue
                 if (currentBox.isManuallyPlaced() || currentBox.isTooLarge()) {
                     boxIndex += 1;
                     continue;
@@ -88,10 +96,17 @@ public class OrderedScannerSolver implements Solver {
                                 segment.addBox(currentBox);
                                 SolverUtils.markSpaceAsOccupied(currentBox, spaceMatrix, xPosition, yPosition);
                                 boxIndex += 1;
+                                // Edge case after placing last box
                                 if (boxIndex != boxList.size()) {
                                     currentBox = boxList.get(boxIndex);
                                 }
                                 foundSpace = true;
+                                // If segment is not already added, add it
+                                if (!segmentAddedToList) {
+                                    solution.addSegment(segment);
+                                    segmentAddedToList = true;
+                                }
+
                             }
                         }
                         // If box already placed, continue to next iteration
@@ -106,12 +121,13 @@ public class OrderedScannerSolver implements Solver {
                 }
                 if (!foundSpace) {
                     segmentHasRoom = false;
-                    solution.addSegment(segment);
                     remainingContainerLength -= segmentLen;
                 }
             }
         }
         solution.markAsPacked();
+        solution.updateNumOfBoxesInSolution();
+        solution.setNumOfSegments(solution.getSegmentList().size());
         Collections.reverse(solution.getSegmentList());
     }
 
