@@ -23,6 +23,26 @@ public class Segment implements Serializable {
         numOfBoxes += 1;
     }
 
+    /**
+     * Receives as input x,y coordinates and returns the box number which occupies these coordinates
+     * @param x
+     * @param y
+     * @return
+     */
+    public int whichBoxWasClicked(int x, int y) {
+        int[][] spaceArray = new int[height][width];
+        for (Box box : boxList) {
+            int startX = box.getBottomLeft().getX();
+            int startY = box.getBottomLeft().getY();
+            for (int i = startX; i < startX + box.getHeight(); i++) {
+                for (int j = startY; j < startY + box.getWidth(); j++ ) {
+                    spaceArray[i][j] = box.getUnpackOrder();
+                }
+            }
+        }
+        return spaceArray[x][y];
+    }
+
     public int getHeight() {
         return height;
     }

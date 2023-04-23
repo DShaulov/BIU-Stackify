@@ -406,6 +406,7 @@ public class SolutionViewActivity extends AppCompatActivity {
             case MotionEvent.ACTION_UP:
                 x2 = event.getX();
                 float deltaX = x2 - x1;
+                // If its a swipe, change segments accordingly
                 if (Math.abs(deltaX) > MIN_DISTANCE)
                 {
                     // Case of left to right swipe
@@ -417,12 +418,27 @@ public class SolutionViewActivity extends AppCompatActivity {
                         showNextSegment();
                     }
                 }
+                // If its a segment view click, show box information
                 else if (Math.abs(deltaX) < MIN_DISTANCE) {
+                    int[] location = new int[2];
+                    solImageView.getLocationOnScreen(location);
+
+                    float clickX = event.getX();
+                    float clickY = event.getY();
+
+                    int imageViewX = location[0];
+                    int imageViewY = location[1];
+
+                    float imageViewClickX = clickX - imageViewX;
+                    float imageViewClickY =  clickY - imageViewY;
+                    Log.d("ImageViewClick", "Clicked at: x=" + imageViewClickX + ", y=" + imageViewClickY);
                 }
                 break;
         }
         return super.onTouchEvent(event);
     }
+
+
 
     @Override
     public void onBackPressed() {
