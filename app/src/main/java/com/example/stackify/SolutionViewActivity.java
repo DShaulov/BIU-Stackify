@@ -1,7 +1,6 @@
 package com.example.stackify;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.MotionEventCompat;
 import androidx.room.Room;
 
 import android.app.AlertDialog;
@@ -387,62 +386,40 @@ public class SolutionViewActivity extends AppCompatActivity {
 
     public void showBoxSelector() {
         AlertDialog.Builder dialogBuilder= new AlertDialog.Builder(this);
-        dialogBuilder.setView(R.layout.dialog_solution_info_viewer);
+        dialogBuilder.setView(R.layout.dialog_view_box_selector);
         AlertDialog alertDialog = dialogBuilder.create();
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {
-                ProgressBar progressBar = alertDialog.findViewById(R.id.progressBar);
-                TextView progressBarPercentTextView = alertDialog.findViewById(R.id.progressBarPercentTextView);
-                ProgressBar volumeProgressBar = alertDialog.findViewById(R.id.volumeProgressBar);
-                TextView volumeProgressBarPercentTextView = alertDialog.findViewById(R.id.volumeProgressBarPercentTextView);
-                TextView unpackedBoxesNumberTextView = alertDialog.findViewById(R.id.unpackedBoxesNumberTextView);
-                TextView solTypeTextView = alertDialog.findViewById(R.id.solTypeTextView);
+                EditText viewBoxNumEdit = alertDialog.findViewById(R.id.viewBoxNumEditText);
+                Button viewBoxNumOkBtn = alertDialog.findViewById(R.id.viewBoxNumOkBtn);
 
-                if (solution.isOrdered()) {
-                    solTypeTextView.setText("Ordered");
-                }
-                else {
-                    solTypeTextView.setText("Unordered");
-                }
+                viewBoxNumOkBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String boxNumString = viewBoxNumEdit.getText().toString();
+                        if (boxNumString.isEmpty()) {
+                            Toast.makeText(SolutionViewActivity.this, "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
-                Integer percentPacked = Math.round(solution.getCoverage());
-                Integer percentVolumePacked = Math.round(solution.getVolumePacked());
-
-                progressBarPercentTextView.setText(percentPacked.toString() + "%");
-                volumeProgressBarPercentTextView.setText(percentVolumePacked.toString() + "%");
-
-                long paddingLeftDp = Math.round(((float)percentPacked / 100.0) * 206) - 30;
-                long volumePaddingLeftDp = Math.round(((float)percentVolumePacked / 100.0) * 206) - 30;
-
-                float scale = getResources().getDisplayMetrics().density;
-                int paddingLeftPx = (int) (paddingLeftDp * scale + 0.5f);
-                int volumePaddingLeftPx = (int) (volumePaddingLeftDp * scale + 0.5f);
-
-                progressBarPercentTextView.setPadding(paddingLeftPx, 0, 0, 0);
-                volumeProgressBarPercentTextView.setPadding(volumePaddingLeftPx, 0, 0, 0);
-                progressBar.setProgress(percentPacked);
-                volumeProgressBar.setProgress(percentVolumePacked);
-
-                String unpackedBoxesString = "";
-                for (Box box : solution.getBoxList()) {
-                    if (!box.isPacked()) {
-                        Integer unpackedOrder = box.getUnpackOrder();
-                        unpackedBoxesString = unpackedBoxesString + unpackedOrder + ", ";
+                        Integer boxNum = Integer.parseInt(viewBoxNumEdit.getText().toString());
+                        if (!solution.boxExists(boxNum)) {
+                            Toast.makeText(SolutionViewActivity.this, "Box number " + boxNum + " does not exist", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        Box boxToShow = solution.getBoxByUnpackOrder(boxNum);
+                        showBoxInfo(boxToShow);
                     }
-                }
-                if (unpackedBoxesString.equals("")) {
-                    unpackedBoxesNumberTextView.setText("None");
-                }
-                else {
-                    unpackedBoxesNumberTextView.setText(unpackedBoxesString.substring(0, unpackedBoxesString.length() - 2));
-                }
+                });
             }
         });
         alertDialog.show();
     }
+    public void showBoxInfo(Box box) {
 
+    }
     public void updateSegmentNumTextView() {
         // Edge case where there are no segments
         String segmentNumString = "";
