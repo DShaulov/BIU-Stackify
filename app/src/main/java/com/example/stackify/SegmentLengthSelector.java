@@ -2,6 +2,7 @@ package com.example.stackify;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Contains algorithms for picking segment lengths
@@ -81,4 +82,36 @@ public class SegmentLengthSelector {
             return new DimNameValuePair("Length", Collections.max(lengthList));
         }
     }
+
+    public static List<Integer> minVarianceDimAllDims(ArrayList<Box> boxList) {
+        List<List<Integer>> lists = new ArrayList<>();
+        for (Box box : boxList) {
+            lists.add(box.getDimList());
+        }
+        List<Integer> bestDims = new ArrayList<>();
+        double minVariance = Double.MAX_VALUE;
+
+        int n = lists.size(); // number of lists
+        int m = lists.get(0).size(); // size of each list (assumed to be the same for all lists)
+
+        for (int i = 0; i < Math.pow(m, n); i++) {
+            ArrayList<Integer> dims = new ArrayList<>();
+            int tmp = i;
+
+            for (int j = 0; j < n; j++) {
+                dims.add(lists.get(j).get(tmp % m));
+                tmp /= m;
+            }
+
+            double variance = getVariance(dims);
+            if (variance < minVariance) {
+                minVariance = variance;
+                bestDims = dims;
+            }
+        }
+
+        // Print the dims with minimum variance
+
+        return bestDims;
+    };
 }

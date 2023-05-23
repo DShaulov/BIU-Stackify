@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 public class Box implements Serializable {
     private int height;
@@ -98,6 +99,15 @@ public class Box implements Serializable {
             rotateWidthLength();
         }
     }
+
+    // Returns a list of all dims - [height, width, length]
+    public List<Integer> getDimList() {
+        List<Integer> list = new ArrayList<>();
+        list.add(height);
+        list.add(width);
+        list.add(length);
+        return list;
+    };
 
     public int getMaxDim() {
         return Math.max(height, Math.max(width, length));

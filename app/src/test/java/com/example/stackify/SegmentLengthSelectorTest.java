@@ -3,6 +3,8 @@ package com.example.stackify;
 import junit.framework.TestCase;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class SegmentLengthSelectorTest extends TestCase {
 
@@ -46,5 +48,20 @@ public class SegmentLengthSelectorTest extends TestCase {
 
         assertEquals(1200, SegmentLengthSelector.minVarianceDim(testBoxList2).getDimValue());
 
+    }
+
+    public void testMinVarianceDimAllDims() {
+        ArrayList<Box> boxList = new ArrayList<>();
+        Box box1 =  new Box(1, 201, 300, 400);
+        Box box2 =  new Box(1, 400, 300, 202);
+        Box box3 =  new Box(1, 300, 203, 400);
+        boxList.add(box1);
+        boxList.add(box2);
+        boxList.add(box3);
+
+        List<Integer> bestDims = SegmentLengthSelector.minVarianceDimAllDims(boxList);
+        assertEquals(300, Optional.ofNullable(bestDims.get(0)));
+        assertEquals(300, Optional.ofNullable(bestDims.get(1)));
+        assertEquals(300, Optional.ofNullable(bestDims.get(2)));
     }
 }
