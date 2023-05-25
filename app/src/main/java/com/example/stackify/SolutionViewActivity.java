@@ -418,7 +418,35 @@ public class SolutionViewActivity extends AppCompatActivity {
         alertDialog.show();
     }
     public void showBoxInfo(Box box) {
+        AlertDialog.Builder dialogBuilder= new AlertDialog.Builder(this);
+        dialogBuilder.setView(R.layout.dialog_box_info);
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                TextView unpackOrderTextView = alertDialog.findViewById(R.id.unpackOrderTextView);
+                TextView heightTextView = alertDialog.findViewById(R.id.heightTextView);
+                TextView widthTextView = alertDialog.findViewById(R.id.widthTextView);
+                TextView lengthTextView = alertDialog.findViewById(R.id.lengthTextView);
+                TextView xPosTextView = alertDialog.findViewById(R.id.xPosTextView);
+                TextView yPosTextView = alertDialog.findViewById(R.id.yPosTextView);
+                TextView segmentNumTextView = alertDialog.findViewById(R.id.segmentNumTextView);
+                Button boxInfoBtn = alertDialog.findViewById(R.id.boxInfoBtn);
 
+                unpackOrderTextView.setText("Unpack Order: " + box.getUnpackOrder());
+                heightTextView.setText("Height: " + box.getHeight());
+                widthTextView.setText("Width: " + box.getWidth());
+                lengthTextView.setText("Length: " + box.getLength());
+                xPosTextView.setText("X Position: " + box.getBottomLeft().getX());
+                yPosTextView.setText("Y Position: " + box.getBottomLeft().getY());
+                segmentNumTextView.setText("Segment: " + (box.getSegmentNum() + 1));
+
+
+                boxInfoBtn.setOnClickListener(view -> {alertDialog.cancel();});
+            }
+        });
+        alertDialog.show();
     }
     public void updateSegmentNumTextView() {
         // Edge case where there are no segments
