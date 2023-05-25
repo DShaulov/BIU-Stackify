@@ -28,7 +28,7 @@ public class OrderedGreedyColumnSolver implements Solver {
     @Override
     public void solve() {
         // Calculate segment length and rotate boxes to fill as much of the depth as possible
-        int segmentLen = SegmentLengthSelector.minVarianceDim(boxList).getDimValue();
+        int segmentLen = SegmentLengthSelector.closestSumSegmentLength(boxList, containerLength);
         for (Box box : boxList) {
             box.rotateToClosestDim(segmentLen);
             box.rotateToMaxWidth();

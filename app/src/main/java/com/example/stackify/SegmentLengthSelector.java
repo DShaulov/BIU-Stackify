@@ -51,10 +51,10 @@ public class SegmentLengthSelector {
      * @param boxList
      * @return segment length
      */
-    public static DimNameValuePair minVarianceDim(ArrayList<Box> boxList) {
+    public static int minVarianceDim(ArrayList<Box> boxList) {
         // Edge case where there are no boxes in solution
         if (boxList.size() == 0) {
-            return new DimNameValuePair("Height", 200);
+            return 200;
         }
         ArrayList<Integer> heightList = new ArrayList<>();
         ArrayList<Integer> widthList = new ArrayList<>();
@@ -72,46 +72,43 @@ public class SegmentLengthSelector {
 
         double minVariance = Math.min(heightVariance, Math.min(widthVariance, lengthVariance));
         if (minVariance == heightVariance) {
-            return new DimNameValuePair("Height", Collections.max(heightList));
+            return new DimNameValuePair("Height", Collections.max(heightList)).getDimValue();
 
         }
         else if (minVariance == widthVariance) {
-            return new DimNameValuePair("Width", Collections.max(widthList));
+            return new DimNameValuePair("Width", Collections.max(widthList)).getDimValue();
         }
         else {
-            return new DimNameValuePair("Length", Collections.max(lengthList));
+            return new DimNameValuePair("Length", Collections.max(lengthList)).getDimValue();
         }
     }
 
-    public static List<Integer> minVarianceDimAllDims(ArrayList<Box> boxList) {
-        List<List<Integer>> lists = new ArrayList<>();
-        for (Box box : boxList) {
-            lists.add(box.getDimList());
+    /**
+     * Checks all multiples of 100 until the container length, to find the one with the minimal sum of box dimension distances to it
+     * @return
+     */
+    public static int closestSumSegmentLength(ArrayList<Box> boxList, int containerLength) {
+        // If the container length is not a multiple of 100, use minVarianceDim
+        if (containerLength % 100 != 0) {
+            return minVarianceDim(boxList);
         }
-        List<Integer> bestDims = new ArrayList<>();
-        double minVariance = Double.MAX_VALUE;
-
-        int n = lists.size(); // number of lists
-        int m = lists.get(0).size(); // size of each list (assumed to be the same for all lists)
-
-        for (int i = 0; i < Math.pow(m, n); i++) {
-            ArrayList<Integer> dims = new ArrayList<>();
-            int tmp = i;
-
-            for (int j = 0; j < n; j++) {
-                dims.add(lists.get(j).get(tmp % m));
-                tmp /= m;
+        int smallestDistanceSum = 147483647;
+        // Arbitrarily large number
+        int bestSegmentLen = 100;
+        for (int i = 100; i <= containerLength; i += 100) {
+            // If container cannot be evenly split in units of i, continue
+            if (containerLength % i != 0) {
+                continue;
             }
-
-            double variance = getVariance(dims);
-            if (variance < minVariance) {
-                minVariance = variance;
-                bestDims = dims;
+            int distanceSum = 0;
+            for (Box box : boxList) {
+                distanceSum += box.getClosestDim(i);
+            }
+            if (distanceSum < smallestDistanceSum) {
+                smallestDistanceSum = distanceSum;
+                bestSegmentLen = i;
             }
         }
-
-        // Print the dims with minimum variance
-
-        return bestDims;
+        return bestSegmentLen;
     };
 }

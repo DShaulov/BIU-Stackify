@@ -18,6 +18,7 @@ public class Box implements Serializable {
     private boolean isTooLarge;
     private Coordinate bottomLeft;
 
+    private int largeNum;
 
 
     public Box(int unpackOrder , int height, int width, int length) {
@@ -27,6 +28,7 @@ public class Box implements Serializable {
         this.unpackOrder = unpackOrder;
         this.manuallyPlaced = false;
         this.isTooLarge = false;
+        this.largeNum = 147483647;
     }
 
     // Rotates the box to its maximum possible length
@@ -99,6 +101,32 @@ public class Box implements Serializable {
             rotateWidthLength();
         }
     }
+
+    public int getClosestDim(int segmentLength) {
+        Integer heightDistance = segmentLength - height;
+        Integer widthDistance = segmentLength - width;
+        Integer lengthDistance = segmentLength - length;
+        ArrayList<Integer> distanceArray = new ArrayList<>();
+        distanceArray.add(heightDistance);
+        distanceArray.add(widthDistance);
+        distanceArray.add(lengthDistance);
+        distanceArray.clone();
+        // Among positive distances (meaning smaller than segmentLength), choose the smallest
+        Iterator<Integer> iterator = distanceArray.iterator();
+        while (iterator.hasNext()){
+            Integer distance = iterator.next();
+            if (distance < 0) {
+                iterator.remove();
+            }
+        }
+        // Returns a number near largest possible if there are no smaller dimensions.
+        if (distanceArray.size() == 0) {
+            return largeNum;
+        }
+        Collections.sort(distanceArray);
+        Integer smallestDistance = distanceArray.get(0);
+        return smallestDistance;
+    };
 
     // Returns a list of all dims - [height, width, length]
     public List<Integer> getDimList() {

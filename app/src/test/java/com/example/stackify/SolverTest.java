@@ -14,7 +14,7 @@ public class SolverTest extends TestCase {
         testBoxList.add(new Box(1, 200, 240, 600));
         testBoxList.add(new Box(1, 225, 200, 400));
 
-        int segmentLen = SegmentLengthSelector.minVarianceDim(testBoxList).getDimValue();
+        int segmentLen = SegmentLengthSelector.minVarianceDim(testBoxList);
         for (Box box : testBoxList) {
             box.rotateToClosestDim(segmentLen);
         }

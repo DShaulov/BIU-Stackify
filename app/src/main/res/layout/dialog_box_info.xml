@@ -14,16 +14,15 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/appGreen"
         android:ems="10"
         android:text="Unpack Order"
         android:textAlignment="center"
         android:textColor="@color/appGreen"
-        android:textColorHint="@color/appGreen"
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/text_view_border"/>
 
     <TextView
         android:id="@+id/heightTextView"
@@ -32,7 +31,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/appGreen"
         android:ems="10"
         android:text="Height"
         android:textAlignment="center"
@@ -41,7 +39,8 @@
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/unpackOrderTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/unpackOrderTextView"
+        android:background="@drawable/text_view_border"/>
 
 
     <TextView
@@ -51,7 +50,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/appGreen"
         android:ems="10"
         android:text="Width"
         android:textAlignment="center"
@@ -60,14 +58,14 @@
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/heightTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/heightTextView"
+        android:background="@drawable/text_view_border"/>
 
     <TextView
         android:id="@+id/lengthTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/appGreen"
         android:ems="10"
         android:text="Length"
         android:textAlignment="center"
@@ -76,14 +74,14 @@
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/widthTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/widthTextView"
+        android:background="@drawable/text_view_border"/>
 
     <TextView
         android:id="@+id/xPosTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/appGreen"
         android:ems="10"
         android:text="X Position"
         android:textAlignment="center"
@@ -92,14 +90,14 @@
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lengthTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/lengthTextView"
+        android:background="@drawable/text_view_border"/>
 
     <TextView
         android:id="@+id/yPosTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/appGreen"
         android:ems="10"
         android:text="Y Position"
         android:textAlignment="center"
@@ -108,14 +106,14 @@
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/xPosTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/xPosTextView"
+        android:background="@drawable/text_view_border"/>
 
     <TextView
         android:id="@+id/segmentNumTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/appGreen"
         android:ems="10"
         android:text="Segment"
         android:textAlignment="center"
@@ -124,7 +122,8 @@
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/yPosTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/yPosTextView"
+        android:background="@drawable/text_view_border"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/boxInfoBtn"

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,6 +17,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -409,6 +411,8 @@ public class SolutionViewActivity extends AppCompatActivity {
                             Toast.makeText(SolutionViewActivity.this, "Box number " + boxNum + " does not exist", Toast.LENGTH_LONG).show();
                             return;
                         }
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(viewBoxNumEdit.getWindowToken(), 0);
                         Box boxToShow = solution.getBoxByUnpackOrder(boxNum);
                         showBoxInfo(boxToShow);
                     }

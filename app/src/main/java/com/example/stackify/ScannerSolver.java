@@ -29,7 +29,8 @@ public class ScannerSolver implements Solver{
     @Override
     public void solve() {
         // Calculate segment length
-        int segmentLen = SegmentLengthSelector.minVarianceDim(boxList).getDimValue();
+        int segmentLen = SegmentLengthSelector.closestSumSegmentLength(boxList, containerLength);
+        //int segmentLen = SegmentLengthSelector.minVarianceDim(boxList).getDimValue();
 
         // Create a space matrix for each segment
         int numOfSegments = containerLength / segmentLen;
