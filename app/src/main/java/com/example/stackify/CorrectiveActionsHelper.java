@@ -373,11 +373,11 @@ public class CorrectiveActionsHelper {
 
         Coordinate topRightBox2 = new Coordinate(bottomLeftBox2.getX() + segmentBox.getWidth(), bottomLeftBox2.getY() + segmentBox.getHeight());
         // If one box is to the side of another, they do not overlap
-        if (topRightBox1.getX() < bottomLeftBox2.getX() || topRightBox2.getX() < bottomLeftBox1.getX()) {
+        if (topRightBox1.getX() <= bottomLeftBox2.getX() || topRightBox2.getX() <= bottomLeftBox1.getX()) {
             return false;
         }
         // If one box is above another, they do not overlap
-        if (topRightBox1.getY() < bottomLeftBox2.getY() || topRightBox2.getY() < bottomLeftBox1.getY()) {
+        if (topRightBox1.getY() <= bottomLeftBox2.getY() || topRightBox2.getY() <= bottomLeftBox1.getY()) {
             return false;
         }
         return true;

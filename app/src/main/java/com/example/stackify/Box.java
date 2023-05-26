@@ -103,6 +103,7 @@ public class Box implements Serializable {
     }
 
     public int getClosestDim(int segmentLength) {
+        Integer largeNum = 40000;
         Integer heightDistance = segmentLength - height;
         Integer widthDistance = segmentLength - width;
         Integer lengthDistance = segmentLength - length;

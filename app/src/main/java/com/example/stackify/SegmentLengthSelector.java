@@ -92,7 +92,7 @@ public class SegmentLengthSelector {
         if (containerLength % 100 != 0) {
             return minVarianceDim(boxList);
         }
-        int smallestDistanceSum = 147483647;
+        int smallestDistanceSum = 40000;
         // Arbitrarily large number
         int bestSegmentLen = 100;
         for (int i = 100; i <= containerLength; i += 100) {
