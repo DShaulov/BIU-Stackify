@@ -18,8 +18,6 @@ public class Box implements Serializable {
     private boolean isTooLarge;
     private Coordinate bottomLeft;
 
-    private int largeNum;
-
 
     public Box(int unpackOrder , int height, int width, int length) {
         this.height = height;
@@ -28,7 +26,6 @@ public class Box implements Serializable {
         this.unpackOrder = unpackOrder;
         this.manuallyPlaced = false;
         this.isTooLarge = false;
-        this.largeNum = 147483647;
     }
 
     // Rotates the box to its maximum possible length
@@ -102,7 +99,8 @@ public class Box implements Serializable {
         }
     }
 
-    public int getClosestDim(int segmentLength) {
+    public long getClosestDim(int segmentLength) {
+        long largeNum = 100000;
         Integer heightDistance = segmentLength - height;
         Integer widthDistance = segmentLength - width;
         Integer lengthDistance = segmentLength - length;

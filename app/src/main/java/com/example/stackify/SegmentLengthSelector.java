@@ -13,6 +13,7 @@ public class SegmentLengthSelector {
      * @param numList
      * @return the variance.
      */
+    private static long largeNum = 100000;
     public static double getVariance(ArrayList<Integer> numList) {
         double sum = 0;
         double squaredSum = 0;
@@ -92,7 +93,7 @@ public class SegmentLengthSelector {
         if (containerLength % 100 != 0) {
             return minVarianceDim(boxList);
         }
-        int smallestDistanceSum = 147483647;
+        long smallestDistanceSum = largeNum;
         // Arbitrarily large number
         int bestSegmentLen = 100;
         for (int i = 100; i <= containerLength; i += 100) {
@@ -100,7 +101,7 @@ public class SegmentLengthSelector {
             if (containerLength % i != 0) {
                 continue;
             }
-            int distanceSum = 0;
+            long distanceSum = 0;
             for (Box box : boxList) {
                 distanceSum += box.getClosestDim(i);
             }
