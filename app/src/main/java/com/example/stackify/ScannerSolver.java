@@ -2,7 +2,9 @@ package com.example.stackify;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ScannerSolver implements Solver{
     private ArrayList<Box> boxList;
@@ -34,7 +36,9 @@ public class ScannerSolver implements Solver{
 
         // Create a space matrix for each segment
         int numOfSegments = containerLength / segmentLen;
+        int placedSegmentNum = 0;
         List<Segment> segmentList = new ArrayList<>();
+        Map<Segment, Integer> segmentMap = new HashMap<>();
         List<boolean[][]> spaceMatrixList = new ArrayList<>();
         for (int i = 0; i < numOfSegments; i++) {
             segmentList.add(new Segment(containerHeight, containerWidth, segmentLen));
@@ -70,6 +74,9 @@ public class ScannerSolver implements Solver{
         for (int i = 0; i < numOfSegments; i++) {
             boolean[][] spaceMatrix = spaceMatrixList.get(i);
             Segment segment = segmentList.get(i);
+            if (segment.getNumOfBoxes() != 0) {
+                solution.addSegment(segment);
+            }
 
             boolean segmentHasRoom = true;
             boolean segmentAddedToList = false;
@@ -104,7 +111,9 @@ public class ScannerSolver implements Solver{
                                 foundSpace = true;
                                 // If segment is not already added, add it
                                 if (!segmentAddedToList) {
-                                    solution.addSegment(segment);
+                                    if (!solution.getSegmentList().contains(segment)) {
+                                        solution.addSegment(segment);
+                                    }
                                     segmentAddedToList = true;
                                 }
 

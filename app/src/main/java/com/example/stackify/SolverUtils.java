@@ -124,8 +124,10 @@ public class SolverUtils {
      * @param yPosition
      */
     public static void markSpaceAsOccupied(Box box,boolean[][] spaceMatrix, int xPosition, int yPosition) {
-        for (int i = yPosition; i < yPosition + box.getHeight(); i++) {
-            for (int j = xPosition; j < xPosition + box.getWidth(); j++) {
+        int boxHeight = box.getHeight();
+        int boxWidth = box.getWidth();
+        for (int i = yPosition; i < yPosition + boxHeight; i++) {
+            for (int j = xPosition; j < xPosition + boxWidth; j++) {
                 spaceMatrix[i][j] = true;
             }
         }
